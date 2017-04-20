@@ -1,18 +1,14 @@
-import errorHandler from './errorHandler';
+const noop = () => {};
 
-export const handleExceptions = (allowedInDevMode = false) => {
-  registerErrorHandler(errorHandler, allowedInDevMode);
-};
-
-export const registerErrorHandler = (customHandler, allowedInDevMode = false) => {
+export const setJSExceptionHandler = (customHandler = noop, allowedInDevMode = false) => {
   const allowed = allowedInDevMode ? true : !__DEV__;
   if (allowed) {
-    if (customHandler) {
-      global.ErrorUtils.setGlobalHandler(customHandler);
-    } else {
-      console.log('Custom Error Handler not passed to registerErrorHandler');
-    }
+    global.ErrorUtils.setGlobalHandler(customHandler);
   } else {
-    console.log('Not registering the error handler since its in dev mode and allowedInDevMode is not true');
+    console.log('Skipping setJSExceptionHandler: Reason: In DEV mode and allowedInDevMode = false');
   }
+};
+
+export default {
+  setJSExceptionHandler
 };

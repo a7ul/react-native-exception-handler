@@ -1,4 +1,6 @@
 import {Alert} from 'react-native';
+import RNRestart from 'react-native-restart';
+import {setJSExceptionHandler} from 'react-native-exception-handler';
 
 const errorHandler = (e, isFatal) => {
   if (isFatal) {
@@ -12,7 +14,7 @@ const errorHandler = (e, isFatal) => {
       [{
         text: 'Restart',
         onPress: () => {
-          console.log('test');
+          RNRestart.Restart();
         }
       }]
     );
@@ -21,4 +23,4 @@ const errorHandler = (e, isFatal) => {
   }
 };
 
-export default errorHandler;
+setJSExceptionHandler(errorHandler);
