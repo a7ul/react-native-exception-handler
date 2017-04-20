@@ -1,0 +1,5 @@
+node_modules
+.git
+cache
+npm-debug.log
+coverage

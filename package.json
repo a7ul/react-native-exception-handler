@@ -1,0 +1,46 @@
+{
+    "name": "react-native-exception-handler",
+    "version": "1.0.0",
+    "description": "A react native module to help tackle the exception problem in react native.",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo no tests && exit 1",
+      "lint": "eslint app/",
+      "lint:fix": "eslint app/ --fix"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/master-atul/react-native-exception-handler"
+    },
+    "keywords": [
+        "modal",
+        "react",
+        "native",
+        "exception",
+        "handler",
+        "production",
+        "ios",
+        "android"
+    ],
+    "peerDependencies": {
+        "react": "*",
+        "react-native": "*"
+    },
+    "author": "master-atul",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/master-atul/react-native-exception-handler/issues"
+    },
+    "homepage": "https://atulr.com/react-native-exception-handler",
+    "bundledDependencies": [
+      "react-native-restart"
+    ],
+    "devDependencies": {
+        "babel-eslint": "^7.1.1",
+        "babel-polyfill": "^6.22.0",
+        "babel-preset-react-native": "^1.9.1",
+        "eslint": "^3.14.1",
+        "eslint-plugin-react": "^6.9.0",
+        "eslint-plugin-react-native": "^2.2.1"
+    }
+}
