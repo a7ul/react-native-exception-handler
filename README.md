@@ -60,7 +60,7 @@ setJSExceptionHandler(errorHandler, true); //Second argument true is basically
 <br>
 
 <div style="text-align:center">
-  <img src="/screens/WITHOUT_DEV.gif" style="width: 50%;display: inline;">
+  <img src="https://github.com/master-atul/react-native-exception-handler/raw/master/screens/WITHOUT_DEV.gif" style="width: 50%;display: inline;">
 </div>
 <br>
 
@@ -69,7 +69,7 @@ setJSExceptionHandler(errorHandler, true); //Second argument true is basically
 <br>
 
 <div style="text-align:center">
-  <img src="/screens/WITHOUT_PROD.gif" style="width: 50%;display: inline;">
+  <img src="https://github.com/master-atul/react-native-exception-handler/raw/master/screens/WITHOUT_PROD.gif" style="width: 50%;display: inline;">
 </div>
 <br>
 
@@ -78,7 +78,7 @@ setJSExceptionHandler(errorHandler, true); //Second argument true is basically
 <br>
 
 <div style="text-align:center">
-  <img src="/screens/WITH_EH.gif" style="width: 50%;display: inline;">
+  <img src="https://github.com/master-atul/react-native-exception-handler/raw/master/screens/WITH_EH.gif" style="width: 50%;display: inline;">
 </div>
 <br>
 
