@@ -158,3 +158,6 @@ setJSExceptionHandler(errorHandler);
 ```
 
 *More Examples can be found in the examples folder*
+
+## NOTES
+1. This module only helps in catching the runtime errors in JS. Native errors can still crash your app without any prompt.
