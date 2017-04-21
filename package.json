@@ -1,7 +1,8 @@
 {
     "name": "react-native-exception-handler",
     "version": "1.0.0",
-    "description": "A react native module to help tackle the exception problem in react native.",
+    "description": "A react native module that lets you to register a global error handler that can capture fatal/non fatal uncaught exceptions.
+",
     "main": "index.js",
     "scripts": {
       "test": "echo no tests && exit 1",
@@ -18,9 +19,13 @@
         "native",
         "exception",
         "handler",
+        "red",
+        "screen",
         "production",
         "ios",
-        "android"
+        "android",
+        "bug",
+        "capture"
     ],
     "peerDependencies": {
         "react": "*",
@@ -31,16 +36,5 @@
     "bugs": {
         "url": "https://github.com/master-atul/react-native-exception-handler/issues"
     },
-    "homepage": "https://atulr.com/react-native-exception-handler",
-    "bundledDependencies": [
-      "react-native-restart"
-    ],
-    "devDependencies": {
-        "babel-eslint": "^7.1.1",
-        "babel-polyfill": "^6.22.0",
-        "babel-preset-react-native": "^1.9.1",
-        "eslint": "^3.14.1",
-        "eslint-plugin-react": "^6.9.0",
-        "eslint-plugin-react-native": "^2.2.1"
-    }
+    "homepage": "https://atulr.com/react-native-exception-handler"
 }
