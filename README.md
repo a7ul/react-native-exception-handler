@@ -14,7 +14,7 @@ To tackle this we register a global error handler that could be used to for exam
 ### Installation:
 
 ```sh
-yarn add react-native-exception-handler
+yarn add react-native-exception-handler¸
 ```
 
 or
@@ -43,8 +43,44 @@ const errorHandler = (error, isFatal) => {
 
 setJSExceptionHandler(errorHandler); // registering the error handler (maybe u can do this in the index.android.js or index.ios.js)
 
-```
+or
 
+setJSExceptionHandler(errorHandler, true); //Second argument true is basically
+                                        //if u need the handler to be called in place of RED  
+                                        //screen in development mode also
+```                                     
+
+
+### Screens
+
+##### Without any error handling
+
+**In DEV MODE**
+
+<br>
+
+<div style="text-align:center">
+  <img src="/screens/WITHOUT_DEV.gif" style="width: 50%;display: inline;">
+</div>
+<br>
+
+**In BUNDLED MODE**
+
+<br>
+
+<div style="text-align:center">
+  <img src="/screens/WITHOUT_PROD.gif" style="width: 50%;display: inline;">
+</div>
+<br>
+
+**With Error handling in BUNDLED MODE**
+
+<br>
+
+<div style="text-align:center">
+  <img src="/screens/WITH_EH.gif" style="width: 50%;display: inline;">
+</div>
+<br>
 
 ### Examples
 
