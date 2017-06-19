@@ -1,4 +1,3 @@
-import {Alert} from 'react-native';
 import {setJSExceptionHandler} from 'react-native-exception-handler';
 
 const reporter = (error) => {
@@ -10,23 +9,10 @@ const reporter = (error) => {
 const errorHandler = (e, isFatal) => {
   if (isFatal) {
     reporter(e);
-    Alert.alert(
-        'Unexpected error occurred',
-        `
-        Error: ${(isFatal) ? 'Fatal:' : ''} ${e.name} ${e.message}
-
-        We have reported this to our team ! Please close the app and start again!
-        `,
-      [{
-        text: 'Close',
-        onPress: () => {
-          BackAndroid.exitApp();
-        }
-      }]
-    );
   } else {
     console.log(e); // So that we can see it in the ADB logs in case of Android if needed
   }
 };
 
-setJSExceptionHandler(errorHandler);
+// We will still see the error screen, but our reporter() function will be called
+setJSExceptionHandler(errorHandler, false, true);
