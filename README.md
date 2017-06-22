@@ -52,7 +52,7 @@ or
 
 setJSExceptionHandler(errorHandler, true, true); //Third argument allows adding it
                                               //as a new handler, but keeping the previous one
-                                              //(it will run errorHandler but still show the red screen)
+                                              //(it will run errorHandler but still show the red screen) [Will be present in next release]
 ```
 
 
