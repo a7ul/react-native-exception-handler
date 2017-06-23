@@ -27,7 +27,7 @@ npm i react-native-exception-handler --save
 ### Usage
 
 ```js
-import {setJSExceptionHandler} from 'react-native-exception-handler';
+import {setJSExceptionHandler, getJSExceptionHandler} from 'react-native-exception-handler';
 
 .
 .
@@ -48,6 +48,8 @@ or
 setJSExceptionHandler(errorHandler, true); //Second argument true is basically
                                         //if u need the handler to be called in place of RED  
                                         //screen in development mode also
+
+const currentHandler = getJSExceptionHandler(); // getJSExceptionHandler gives the currently set handler
 ```                                     
 
 
@@ -158,6 +160,7 @@ setJSExceptionHandler(errorHandler);
 ```
 
 *More Examples can be found in the examples folder*
+- Preserving old handler
 
 ## NOTES
 1. This module only helps in catching the runtime errors in JS. Native errors can still crash your app without any prompt.

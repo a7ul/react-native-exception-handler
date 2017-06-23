@@ -4,9 +4,9 @@
     "description": "A react native module that lets you to register a global error handler that can capture fatal/non fatal uncaught exceptions.",
     "main": "index.js",
     "scripts": {
-      "test": "echo no tests && exit 1",
-      "lint": "eslint app/",
-      "lint:fix": "eslint app/ --fix"
+        "test": "echo no tests && exit 1",
+        "lint": "eslint app/",
+        "lint:fix": "eslint app/ --fix"
     },
     "repository": {
         "type": "git",
@@ -35,5 +35,11 @@
     "bugs": {
         "url": "https://github.com/master-atul/react-native-exception-handler/issues"
     },
-    "homepage": "https://atulr.com/react-native-exception-handler"
+    "homepage": "https://github.com/master-atul/react-native-exception-handler",
+    "devDependencies": {
+        "babel-eslint": "^7.2.3",
+        "eslint": "^4.0.0",
+        "eslint-plugin-react": "^7.1.0",
+        "eslint-plugin-react-native": "^2.3.2"
+    }
 }

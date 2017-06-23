@@ -10,8 +10,11 @@
     "react",
     "react-native"
   ],
-  "ecmaFeatures": {
-    "jsx": true
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "sourceType": "module"
   },
   "extends": ["eslint:recommended", "plugin:react/recommended"],
   "rules": {
