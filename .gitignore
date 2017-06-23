@@ -3,3 +3,4 @@ node_modules
 cache
 npm-debug.log
 coverage
+.DS_Store

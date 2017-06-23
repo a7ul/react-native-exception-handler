@@ -1,7 +1,7 @@
 # react-native-exception-handler
 
 A react native module that lets you to register a global error handler that can capture fatal/non fatal uncaught exceptions.
-The module helps prevent abrupt crashing of RN Apps without a graceful message to the user.
+The module helps prevent abrupt crashing of RN Apps without a graceful message to the user.   
 
 In the current scenario:
   - `In DEV mode , you get a RED Screen error pointing your JS errors.`
@@ -46,14 +46,9 @@ setJSExceptionHandler(errorHandler); // registering the error handler (maybe u c
 or
 
 setJSExceptionHandler(errorHandler, true); //Second argument true is basically
-                                        //if u need the handler to be called in place of RED
+                                        //if u need the handler to be called in place of RED  
                                         //screen in development mode also
-or
-
-setJSExceptionHandler(errorHandler, true, true); //Third argument allows adding it
-                                              //as a new handler, but keeping the previous one
-                                              //(it will run errorHandler but still show the red screen) [Will be present in next release]
-```
+```                                     
 
 
 ### Screens

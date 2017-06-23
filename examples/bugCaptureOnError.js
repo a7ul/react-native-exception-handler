@@ -1,4 +1,5 @@
 import {Alert} from 'react-native';
+import {BackAndroid} from 'react-native';
 import {setJSExceptionHandler} from 'react-native-exception-handler';
 
 const reporter = (error) => {
