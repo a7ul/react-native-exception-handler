@@ -160,7 +160,12 @@ setJSExceptionHandler(errorHandler);
 ```
 
 *More Examples can be found in the examples folder*
-- Preserving old handler
+- Preserving old handler (thanks to zeh)
 
 ## NOTES
 1. This module only helps in catching the runtime errors in JS. Native errors can still crash your app without any prompt.
+
+
+## CONTRIBUTORS
+- [Atul R](https://github.com/master-atul)
+- [Zeh Fernando](https://github.com/zeh)
