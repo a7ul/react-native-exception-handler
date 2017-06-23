@@ -9,6 +9,9 @@ export const setJSExceptionHandler = (customHandler = noop, allowedInDevMode = f
   }
 };
 
+export const getJSExceptionHandler = () => global.ErrorUtils.getGlobalHandler();
+
 export default {
-  setJSExceptionHandler
+  setJSExceptionHandler,
+  getJSExceptionHandler
 };
