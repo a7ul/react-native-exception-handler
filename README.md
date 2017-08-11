@@ -215,3 +215,33 @@ import ReactNativeExceptionHandler from 'react-native-exception-handler';
 // TODO: What to do with the module?
 ReactNativeExceptionHandler;
 ```
+
+
+
+
+## Handling Native errors
+
+FOR IOS
+```c
+#import "ReactNativeExceptionHandler.h"
+...
+...
+...
+[ReactNativeExceptionHandler callOnException:^(NSException *exception, NSString *readeableException){
+
+    UIAlertController* alert = [UIAlertController
+                                alertControllerWithTitle:@"Bug Captured"
+                                message: readeableException
+                                preferredStyle:UIAlertControllerStyleAlert];
+
+    [rootViewController presentViewController:alert animated:YES completion:nil];
+
+    [NSTimer scheduledTimerWithTimeInterval:3.0
+                                     target:[ReactNativeExceptionHandler class]
+                                   selector:@selector(releaseErrorHandler)
+                                   userInfo:nil
+                                    repeats:NO];
+
+//    [ReactNativeExceptionHandler releaseErrorHandler];
+  }];
+```

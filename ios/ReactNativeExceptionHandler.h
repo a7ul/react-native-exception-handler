@@ -6,6 +6,8 @@
 #endif
 
 @interface ReactNativeExceptionHandler : NSObject <RCTBridgeModule>
-
++ (void) callOnException:(void (^)(NSException *exception, NSString *readeableException))callbackBlock;
++ (void) releaseErrorHandler;
 @end
-  
+
+
