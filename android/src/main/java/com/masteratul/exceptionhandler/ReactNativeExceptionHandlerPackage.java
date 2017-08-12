@@ -1,5 +1,5 @@
 
-package com.master-atul.exceptionhandler;
+package com.masteratul.exceptionhandler;
 
 import java.util.Arrays;
 import java.util.Collections;
