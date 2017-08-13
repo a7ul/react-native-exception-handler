@@ -40,18 +40,18 @@ void (^defaultNativeErrorCallbackBlock)(NSException *exception, NSString *readea
     
     [NSTimer scheduledTimerWithTimeInterval:5.0
                                      target:[ReactNativeExceptionHandler class]
-                                   selector:@selector(releaseErrorHandler)
+                                   selector:@selector(releaseExceptionHold)
                                    userInfo:nil
                                     repeats:NO];
 };
 
 
-+ (void) setNativeExceptionHandlerBlock:(void (^)(NSException *exception, NSString *readeableException))nativeCallbackBlock{
++ (void) replaceNativeExceptionHandlerBlock:(void (^)(NSException *exception, NSString *readeableException))nativeCallbackBlock{
     NSLog(@"SET THE CALLBACK HANDLER NATTTIVEEE");
     nativeErrorCallbackBlock = nativeCallbackBlock;
 }
 
-+ (void) releaseErrorHandler {
++ (void) releaseExceptionHold {
     dismissed = true;
     NSLog(@"RELEASING LOCKED RN EXCEPTION HANDLER");
 }
@@ -182,7 +182,7 @@ void SignalHandler(int signal)
 
 RCT_EXPORT_MODULE();
 
-RCT_EXPORT_METHOD(setiOSNativeExceptionHandler:(RCTResponseSenderBlock)callback)
+RCT_EXPORT_METHOD(setHandlerforNativeException:(RCTResponseSenderBlock)callback)
 {
     jsErrorCallbackBlock = ^(NSException *exception, NSString *readeableException){
         callback(@[readeableException]);

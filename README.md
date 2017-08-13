@@ -216,18 +216,27 @@ import ReactNativeExceptionHandler from 'react-native-exception-handler';
 ReactNativeExceptionHandler;
 ```
 
-
-
-
 ## Handling Native errors
 
+FROM JS
+```js
+import {setNativeExceptionHandler} from 'react-native-exception-handler/index';
+
+setNativeExceptionHandler((errorString) => {
+  console.log('ERRROR STRINGGG', errorString);
+  //alert(errorString); //NOT ALLOWED HERE - WONT WORK
+});
+
+```
+
+### CUSTOMIZATION
 FOR IOS
 ```c
 #import "ReactNativeExceptionHandler.h"
 ...
 ...
 ...
-[ReactNativeExceptionHandler setNativeExceptionHandlerBlock:^(NSException *exception, NSString *readeableException){
+[ReactNativeExceptionHandler replaceNativeExceptionHandlerBlock:^(NSException *exception, NSString *readeableException){
 
     UIAlertController* alert = [UIAlertController
                                 alertControllerWithTitle:@"Bug Captured"
@@ -238,10 +247,29 @@ FOR IOS
 
     [NSTimer scheduledTimerWithTimeInterval:3.0
                                      target:[ReactNativeExceptionHandler class]
-                                   selector:@selector(releaseErrorHandler)
+                                   selector:@selector(releaseExceptionHold)
                                    userInfo:nil
                                     repeats:NO];
 
-//    [ReactNativeExceptionHandler releaseErrorHandler];
+//    [ReactNativeExceptionHandler releaseExceptionHold];
   }];
+```
+
+
+For android
+
+```java
+import com.masteratul.exceptionhandler.ReactNativeExceptionHandlerModule;
+import com.masteratul.exceptionhandler.DefaultErrorScreen;
+...
+...
+...
+  @Override
+  public void onCreate() {
+    ....
+    ....
+    ....
+    ReactNativeExceptionHandlerModule.replaceErrorScreenActivityClass(DefaultErrorScreen.class);
+  }
+
 ```

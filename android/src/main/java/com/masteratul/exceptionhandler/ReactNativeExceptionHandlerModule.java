@@ -2,10 +2,7 @@
 package com.masteratul.exceptionhandler;
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Looper;
-import android.provider.Settings;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -16,7 +13,7 @@ public class ReactNativeExceptionHandlerModule extends ReactContextBaseJavaModul
 
   private ReactApplicationContext reactContext;
     private Activity activity;
-    private Class errorIntentTargetClass = Dialog.class;
+    private static Class errorIntentTargetClass = DefaultErrorScreen.class;
     private Callback callbackHolder;
 
     public ReactNativeExceptionHandlerModule(ReactApplicationContext reactContext) {
@@ -29,13 +26,9 @@ public class ReactNativeExceptionHandlerModule extends ReactContextBaseJavaModul
     return "ReactNativeExceptionHandler";
   }
 
-  @ReactMethod
-  public void setTargetErrorScreenIntentAction(String intentActionName){
-
-  }
 
   @ReactMethod
-  public void setAndroidNativeExceptionHandler(Callback customHandler){
+  public void setHandlerforNativeException(Callback customHandler){
       callbackHolder = customHandler;
       Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
           @Override
@@ -52,4 +45,8 @@ public class ReactNativeExceptionHandlerModule extends ReactContextBaseJavaModul
           }
       });
   }
+
+   public static void replaceErrorScreenActivityClass(Class errorScreenActivityClass){
+       errorIntentTargetClass = errorScreenActivityClass;
+   }
 }

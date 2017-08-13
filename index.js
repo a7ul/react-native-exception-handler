@@ -18,14 +18,11 @@ export const getJSExceptionHandler = () => global.ErrorUtils.getGlobalHandler();
 
 export const ReactNativeExceptionHandlerModule = ReactNativeExceptionHandler;
 
-export const setNativeExceptionHandler = (customErrorHandler = noop, targetActivityIntentAction = null) => {
-  if (targetActivityIntentAction) {
-    ReactNativeExceptionHandler.setTargetErrorScreenIntentAction(targetActivityIntentAction);
-  }
+export const setNativeExceptionHandler = (customErrorHandler = noop) => {
   if (typeof customErrorHandler !== 'function') {
     customErrorHandler = noop;
   }
-  ReactNativeExceptionHandler.setAndroidNativeExceptionHandler(customErrorHandler);
+  ReactNativeExceptionHandler.setHandlerforNativeException(customErrorHandler);
 };
 
 export default {
