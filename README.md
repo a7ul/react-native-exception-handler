@@ -14,8 +14,39 @@ To tackle this we register a global error handler that could be used to for exam
 
 #### UPDATE - V2:
 
-<p style="color:green;font-weight:bold;">V2 of this module now supports catching Unhandled Native Exceptions also along with the JS Exceptions ✌🏻🍻</p>
+**V2 of this module now supports catching Unhandled Native Exceptions also along with the JS Exceptions ✌🏻🍻**
 There are **NO** breaking changes. So its safe to upgrade from v1 to v2. So there is no reason not to 😉.
+
+### Screens
+
+##### Without any error handling
+
+**In DEV MODE**
+
+<br>
+
+<div style="text-align:center">
+  <img src="https://github.com/master-atul/react-native-exception-handler/raw/master/screens/WITHOUT_DEV.gif" style="width: 50%;display: inline;">
+</div>
+<br>
+
+**In BUNDLED MODE**
+
+<br>
+
+<div style="text-align:center">
+  <img src="https://github.com/master-atul/react-native-exception-handler/raw/master/screens/WITHOUT_PROD.gif" style="width: 50%;display: inline;">
+</div>
+<br>
+
+**With Error handling in BUNDLED MODE**
+
+<br>
+
+<div style="text-align:center">
+  <img src="https://github.com/master-atul/react-native-exception-handler/raw/master/screens/WITH_EH.gif" style="width: 50%;display: inline;">
+</div>
+<br>
 
 ### Installation:
 
@@ -66,7 +97,7 @@ Lets introduce you to the type of errors in a RN app.
 
 Unhandled exceptions leave the app in a critical state.
 
-In case of **JS_Exceptions** you can catch these unhandled exceptions and perform tasks like show alerts or popups ,do cleanup or even hit an API to inform the dev teams before closing the app.
+In case of **JS_Exceptions** you can catch these unhandled exceptions and perform tasks like show alerts or popups, do cleanup or even hit an API to inform the dev teams before closing the app.
 
 In case of **Native_Exceptions** it becomes much worse. While you can catch these unhandled exceptions and perform tasks like cleanup or logout or even hit an API to inform the dev teams before closing the app,
 you CANNOT show a JS alert box or do any UI stuff via JS code. This has to be done via the native methods provided by this module in the repective NATIVE codebase for iOS and android. The module does provide default handlers though :P. So you will get default popups incase of errors. Obviously you can customise them. See CUSTOMIZATION section.
@@ -103,7 +134,6 @@ setNativeExceptionHandler((exceptionString) => {
   // or hit a custom api to inform the dev team.
   //NOTE: alert or showing any UI change via JS
   //WILL NOT WORK in case of NATIVE ERRORS.
-  // example : fetch(<API>);
 });
 
 ```
@@ -111,37 +141,6 @@ It is recommended you set both the handlers.
 
 **See the examples to know more**                   
 
-
-### Screens
-
-##### Without any error handling
-
-**In DEV MODE**
-
-<br>
-
-<div style="text-align:center">
-  <img src="https://github.com/master-atul/react-native-exception-handler/raw/master/screens/WITHOUT_DEV.gif" style="width: 50%;display: inline;">
-</div>
-<br>
-
-**In BUNDLED MODE**
-
-<br>
-
-<div style="text-align:center">
-  <img src="https://github.com/master-atul/react-native-exception-handler/raw/master/screens/WITHOUT_PROD.gif" style="width: 50%;display: inline;">
-</div>
-<br>
-
-**With Error handling in BUNDLED MODE**
-
-<br>
-
-<div style="text-align:center">
-  <img src="https://github.com/master-atul/react-native-exception-handler/raw/master/screens/WITH_EH.gif" style="width: 50%;display: inline;">
-</div>
-<br>
 
 ### CUSTOMIZATION
 
