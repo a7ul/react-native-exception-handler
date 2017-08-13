@@ -1,7 +1,9 @@
 
 package com.masteratul.exceptionhandler;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Looper;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -14,6 +16,8 @@ public class ReactNativeExceptionHandlerModule extends ReactContextBaseJavaModul
 
   private ReactApplicationContext reactContext;
     private Activity activity;
+    private String errorIntentActionName = "com.exceptionhandler.defaultErrorScreen";
+    private Callback callbackHolder;
 
     public ReactNativeExceptionHandlerModule(ReactApplicationContext reactContext) {
     super(reactContext);
@@ -26,29 +30,25 @@ public class ReactNativeExceptionHandlerModule extends ReactContextBaseJavaModul
   }
 
   @ReactMethod
+  public void setTargetErrorScreenIntentAction(String intentActionName){
+    errorIntentActionName = intentActionName;
+  }
+
+  @ReactMethod
   public void setAndroidNativeExceptionHandler(Callback customHandler){
-      activity = getCurrentActivity();
+      callbackHolder = customHandler;
       Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
           @Override
           public void uncaughtException(Thread thread, Throwable throwable) {
-              new Thread() {
-                  @Override
-                  public void run() {
-                      Looper.prepare();
-                      Toast.makeText(activity.getApplicationContext(), "Application crashed", Toast.LENGTH_LONG).show();
-                      System.exit(1);
-                      Looper.loop();
-                  }
-              }.start();
-
-//              try
-//              {
-//                  Thread.sleep(4000); // Let the Toast display before app will get shutdown
-//              }
-//              catch (InterruptedException e)
-//              {
-//                  Log.d("EXCEPTION HANDLER","SLEEP interrupted");
-//              }
+              activity = getCurrentActivity();
+              String stackTraceString = Log.getStackTraceString(throwable);
+              callbackHolder.invoke(stackTraceString);
+              Log.d("ERROR",stackTraceString);
+              Intent i = new Intent();
+              i.setAction(errorIntentActionName);
+              i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+              activity.startActivity(i);
+              System.exit(0);
           }
       });
   }
