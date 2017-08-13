@@ -6,10 +6,6 @@
         <activity android:name=".Dialog"
             android:launchMode="singleInstance"
             android:process=":errorhandler">
-            <intent-filter>
-                <action android:name="com.exceptionhandler.defaultErrorScreen"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
         </activity>
     </application>
 

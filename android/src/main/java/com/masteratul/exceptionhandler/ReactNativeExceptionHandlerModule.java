@@ -16,7 +16,7 @@ public class ReactNativeExceptionHandlerModule extends ReactContextBaseJavaModul
 
   private ReactApplicationContext reactContext;
     private Activity activity;
-    private String errorIntentActionName = "com.exceptionhandler.defaultErrorScreen";
+    private Class errorIntentTargetClass = Dialog.class;
     private Callback callbackHolder;
 
     public ReactNativeExceptionHandlerModule(ReactApplicationContext reactContext) {
@@ -31,7 +31,7 @@ public class ReactNativeExceptionHandlerModule extends ReactContextBaseJavaModul
 
   @ReactMethod
   public void setTargetErrorScreenIntentAction(String intentActionName){
-    errorIntentActionName = intentActionName;
+
   }
 
   @ReactMethod
@@ -45,7 +45,7 @@ public class ReactNativeExceptionHandlerModule extends ReactContextBaseJavaModul
               callbackHolder.invoke(stackTraceString);
               Log.d("ERROR",stackTraceString);
               Intent i = new Intent();
-              i.setAction(errorIntentActionName);
+              i.setClass(activity, errorIntentTargetClass);
               i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
               activity.startActivity(i);
               System.exit(0);
