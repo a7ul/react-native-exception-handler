@@ -3,9 +3,7 @@
     package="com.masteratul.exceptionhandler">
 
     <application>
-        <activity android:name=".DefaultErrorScreen"
-            android:launchMode="singleInstance"
-            android:process=":errorhandler">
+        <activity android:name=".DefaultErrorScreen">
         </activity>
     </application>
 

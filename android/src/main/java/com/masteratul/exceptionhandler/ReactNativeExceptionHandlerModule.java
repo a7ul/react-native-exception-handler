@@ -39,6 +39,7 @@ public class ReactNativeExceptionHandlerModule extends ReactContextBaseJavaModul
               Log.d("ERROR",stackTraceString);
               Intent i = new Intent();
               i.setClass(activity, errorIntentTargetClass);
+              i.putExtra("stack_trace_string",stackTraceString);
               i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
               activity.startActivity(i);
               System.exit(0);
