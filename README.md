@@ -39,7 +39,7 @@ There are **NO** breaking changes. So its safe to upgrade from v1 to v2. So ther
 </div>
 <br>
 
-**With Error handling in BUNDLED MODE**
+**With react-native-exception-handler in BUNDLED MODE**
 
 <br>
 
