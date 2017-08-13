@@ -332,8 +332,9 @@ setNativeExceptionHandler((errorString) => {
     //You can do something like call an api to report to dev team here
     ...
     ...
-   //When you call setNativeExceptionHandler, react-native-exception-handler sets a Native Exception Handler popup which supports restart on error in case of android.
-   // In case of iOS, it is not possibe to restart the app programmatically, so we just show an error popup and close the app.
+   // When you call setNativeExceptionHandler, react-native-exception-handler sets a  
+   // Native Exception Handler popup which supports restart on error in case of android.
+   // In case of iOS, it is not possible to restart the app programmatically, so we just show an error popup and close the app.
    // To customize the popup screen take a look at CUSTOMIZATION section.
 });
 ```
@@ -400,7 +401,8 @@ setNativeExceptionHandler((errorString) => {
 To make sure this module works. You can generate a native exception using the module `rn-test-exception-handler`.
 [https://github.com/master-atul/rn-test-exception-handler](https://github.com/master-atul/rn-test-exception-handler)
 
-This module does only one thing. It raises a **Native_Exceptions**.
-This will help you to verify your customizations or this module.
+`rn-test-exception-handler` module does only one thing. It raises a **Native_Exceptions**.
+This will help you to verify your customizations or functionality of this module.
+
 
 Peace ! ✌🏻🍻
