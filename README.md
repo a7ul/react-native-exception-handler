@@ -255,6 +255,28 @@ FOR IOS
   }];
 ```
 
+or
+
+```c
+[ReactNativeExceptionHandler replaceNativeExceptionHandlerBlock:^(NSException *exception, NSString *readeableException){
+
+    UIAlertController* alert = [UIAlertController
+                                alertControllerWithTitle:@"Critical error occurred"
+                                message: @"We have informed our developers to look into the issue.\n Please relaunch the app to continue..."
+                                preferredStyle:UIAlertControllerStyleAlert];
+
+    [rootViewController presentViewController:alert animated:YES completion:nil];
+
+    [NSTimer scheduledTimerWithTimeInterval:4.0
+                                     target:[ReactNativeExceptionHandler class]
+                                   selector:@selector(releaseExceptionHold)
+                                   userInfo:nil
+                                    repeats:NO];
+
+    //    [ReactNativeExceptionHandler releaseExceptionHold];
+  }];
+```
+
 
 For android
 

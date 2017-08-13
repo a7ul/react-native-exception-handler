@@ -1,17 +1,15 @@
 #import "ReactNativeExceptionHandler.h"
-#import  <UIKit/UIKit.h>
-#include <libkern/OSAtomic.h>
-#include <execinfo.h>
 
+
+// CONSTANTS
 NSString * const UncaughtExceptionHandlerSignalExceptionName = @"UncaughtExceptionHandlerSignalExceptionName";
 NSString * const UncaughtExceptionHandlerSignalKey = @"UncaughtExceptionHandlerSignalKey";
 NSString * const UncaughtExceptionHandlerAddressesKey = @"UncaughtExceptionHandlerAddressesKey";
-
 volatile int32_t UncaughtExceptionCount = 0;
 const int32_t UncaughtExceptionMaximum = 10;
-
 const NSInteger UncaughtExceptionHandlerSkipAddressCount = 4;
 const NSInteger UncaughtExceptionHandlerReportAddressCount = 5;
+
 
 @implementation ReactNativeExceptionHandler
 
@@ -20,18 +18,28 @@ const NSInteger UncaughtExceptionHandlerReportAddressCount = 5;
     return dispatch_get_main_queue();
 }
 
-bool dismissed = true;
+// ======================
+// VARIABLE DECLARATIONS
+// ======================
 
+//variable which is used to track till when to keep the app running on exception.
+bool dismissApp = true;
+
+//variable to hold the custom error handler passed while customizing native handler
 void (^nativeErrorCallbackBlock)(NSException *exception, NSString *readeableException);
+
+//variable to hold the js error handler when setting up the error handler in RN.
 void (^jsErrorCallbackBlock)(NSException *exception, NSString *readeableException);
 
-
+//variable that holds the default native error handler
 void (^defaultNativeErrorCallbackBlock)(NSException *exception, NSString *readeableException) =
 ^(NSException *exception, NSString *readeableException){
     
     UIAlertController* alert = [UIAlertController
-                                alertControllerWithTitle:@"Bug Captured"
-                                message: readeableException
+                                alertControllerWithTitle:@"Unexpected error occured"
+                                message:[NSString stringWithFormat:@"%@\n%@",
+                                         @"Appologies..The app will close now \nPlease restart the app\n",
+                                         readeableException]
                                 preferredStyle:UIAlertControllerStyleAlert];
     
     UIApplication* app = [UIApplication sharedApplication];
@@ -46,22 +54,56 @@ void (^defaultNativeErrorCallbackBlock)(NSException *exception, NSString *readea
 };
 
 
+// ====================================
+// REACT NATIVE MODULE EXPOSED METHODS
+// ====================================
+
+RCT_EXPORT_MODULE();
+
+// METHOD TO INITIALIZE THE EXCEPTION HANDLER AND SET THE JS CALLBACK BLOCK
+RCT_EXPORT_METHOD(setHandlerforNativeException:(RCTResponseSenderBlock)callback)
+{
+    jsErrorCallbackBlock = ^(NSException *exception, NSString *readeableException){
+        callback(@[readeableException]);
+    };
+    
+    NSSetUncaughtExceptionHandler(&HandleException);
+    signal(SIGABRT, SignalHandler);
+    signal(SIGILL, SignalHandler);
+    signal(SIGSEGV, SignalHandler);
+    signal(SIGFPE, SignalHandler);
+    signal(SIGBUS, SignalHandler);
+    signal(SIGPIPE, SignalHandler);
+    NSLog(@"REGISTERED RN EXCEPTION HANDLER");
+}
+
+
+// =====================================================
+// METHODS TO CUSTOMIZE THE DEFAULT NATIVE ERROR HANDLER
+// =====================================================
+
 + (void) replaceNativeExceptionHandlerBlock:(void (^)(NSException *exception, NSString *readeableException))nativeCallbackBlock{
     NSLog(@"SET THE CALLBACK HANDLER NATTTIVEEE");
     nativeErrorCallbackBlock = nativeCallbackBlock;
 }
 
 + (void) releaseExceptionHold {
-    dismissed = true;
+    dismissApp = true;
     NSLog(@"RELEASING LOCKED RN EXCEPTION HANDLER");
 }
+
+
+// ================================================================
+// ACTUAL CUSTOM HANDLER called by the EXCEPTION AND SIGNAL HANDLER
+// WHICH KEEPS THE APP RUNNING ON EXCEPTION
+// ================================================================
 
 - (void)handleException:(NSException *)exception
 {
     NSString * readeableError = [NSString stringWithFormat:NSLocalizedString(@"%@\n%@", nil),
                                  [exception reason],
                                  [[exception userInfo] objectForKey:UncaughtExceptionHandlerAddressesKey]];
-    dismissed = false;
+    dismissApp = false;
     
     if(nativeErrorCallbackBlock != nil){
         nativeErrorCallbackBlock(exception,readeableError);
@@ -72,7 +114,7 @@ void (^defaultNativeErrorCallbackBlock)(NSException *exception, NSString *readea
     
     CFRunLoopRef runLoop = CFRunLoopGetCurrent();
     CFArrayRef allModes = CFRunLoopCopyAllModes(runLoop);
-    while (!dismissed)
+    while (!dismissApp)
     {
         long count = CFArrayGetCount(allModes);
         long i = 0;
@@ -98,6 +140,11 @@ void (^defaultNativeErrorCallbackBlock)(NSException *exception, NSString *readea
     kill(getpid(), [[[exception userInfo] objectForKey:UncaughtExceptionHandlerSignalKey] intValue]);
 
 }
+
+
+// ============================================================================
+// EXCEPTION AND SIGNAL HANDLERS to collect error and launch the custom handler
+// ============================================================================
 
 void HandleException(NSException *exception)
 {
@@ -159,6 +206,10 @@ void SignalHandler(int signal)
 }
 
 
+// ====================================
+// UTILITY METHOD TO GET THE BACKTRACE
+// ====================================
+
 + (NSArray *)backtrace
 {
     void* callstack[128];
@@ -178,24 +229,6 @@ void SignalHandler(int signal)
     free(strs);
     
     return backtrace;
-}
-
-RCT_EXPORT_MODULE();
-
-RCT_EXPORT_METHOD(setHandlerforNativeException:(RCTResponseSenderBlock)callback)
-{
-    jsErrorCallbackBlock = ^(NSException *exception, NSString *readeableException){
-        callback(@[readeableException]);
-    };
-    
-    NSSetUncaughtExceptionHandler(&HandleException);
-    signal(SIGABRT, SignalHandler);
-    signal(SIGILL, SignalHandler);
-    signal(SIGSEGV, SignalHandler);
-    signal(SIGFPE, SignalHandler);
-    signal(SIGBUS, SignalHandler);
-    signal(SIGPIPE, SignalHandler);
-    NSLog(@"REGISTERED RN EXCEPTION HANDLER");
 }
 
 @end
