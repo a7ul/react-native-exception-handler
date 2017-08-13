@@ -144,7 +144,7 @@ It is recommended you set both the handlers.
 
 ### CUSTOMIZATION
 
-##### Customizing **setJSExceptionHandler**.
+#### Customizing **setJSExceptionHandler**.
 In case of `setJSExceptionHandler` you can do everything that is possible. Hence there is not much to customize here.
 ```js
 const errorHandler = (error, isFatal) => {
@@ -159,7 +159,7 @@ const errorHandler = (error, isFatal) => {
 setJSExceptionHandler(errorHandler, true);
 ```
 
-##### Customizing **setNativeExceptionHandler**
+#### Customizing **setNativeExceptionHandler**
 
 By default whenever a **Native_Exceptions** occurs if you have used `setNativeExceptionHandler`, **along with the callback specified** you would see a popup (this is the default native handler set by this module).
 
@@ -286,14 +286,13 @@ To close the app or to remove the UI lockup on exception, we need to call this m
 
 Hence we set a timer of 4 secs and then call the method releaseExceptionHold to quit the app after
 4 secs of showing the popup
-```[NSTimer scheduledTimerWithTimeInterval:4.0
+```c
+[NSTimer scheduledTimerWithTimeInterval:4.0
                                  target:[ReactNativeExceptionHandler class]
                                selector:@selector(releaseExceptionHold)
                                userInfo:nil
-                                repeats:NO];```
-
-
-
+                                repeats:NO];
+```
 
 ### Examples
 
