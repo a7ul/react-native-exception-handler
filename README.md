@@ -1,57 +1,21 @@
+
 # react-native-exception-handler
 
 A react native module that lets you to register a global error handler that can capture fatal/non fatal uncaught exceptions.
 The module helps prevent abrupt crashing of RN Apps without a graceful message to the user.   
 
 In the current scenario:
-  - `In DEV mode , you get a RED Screen error pointing your JS errors.`
+  - `In DEV mode , you get a RED Screen error pointing your errors.`
   - `In Bundled mode , the app just quits without any prompt !` 🙄
 
 To tackle this we register a global error handler that could be used to for example:
 1. Send bug reports to dev team when the app crashes
 2. Show a creative dialog saying the user should restart the application
 
-### Installation:
+#### UPDATE - V2:
 
-```sh
-yarn add react-native-exception-handler¸
-```
-
-or
-
-```sh
-npm i react-native-exception-handler --save
-```
-
-
-### Usage
-
-```js
-import {setJSExceptionHandler, getJSExceptionHandler} from 'react-native-exception-handler';
-
-.
-.
-.
-
-const errorHandler = (error, isFatal) => {
-  // This is your custom global error handler
-}
-
-.
-.
-.
-
-setJSExceptionHandler(errorHandler); // registering the error handler (maybe u can do this in the index.android.js or index.ios.js)
-
-or
-
-setJSExceptionHandler(errorHandler, true); //Second argument true is basically
-                                        //if u need the handler to be called in place of RED  
-                                        //screen in development mode also
-
-const currentHandler = getJSExceptionHandler(); // getJSExceptionHandler gives the currently set handler
-```                                     
-
+**V2 of this module now supports catching Unhandled Native Exceptions also along with the JS Exceptions ✌🏻🍻**
+There are **NO** breaking changes. So its safe to upgrade from v1 to v2. So there is no reason not to 😉.
 
 ### Screens
 
@@ -75,7 +39,7 @@ const currentHandler = getJSExceptionHandler(); // getJSExceptionHandler gives t
 </div>
 <br>
 
-**With Error handling in BUNDLED MODE**
+**With react-native-exception-handler in BUNDLED MODE**
 
 <br>
 
@@ -83,6 +47,252 @@ const currentHandler = getJSExceptionHandler(); // getJSExceptionHandler gives t
   <img src="https://github.com/master-atul/react-native-exception-handler/raw/master/screens/WITH_EH.gif" style="width: 50%;display: inline;">
 </div>
 <br>
+
+### Installation:
+
+`yarn add react-native-exception-handler`
+
+or
+
+`npm i react-native-exception-handler --save`
+
+
+### Mostly automatic installation
+
+`react-native link react-native-exception-handler`
+
+### Manual installation
+
+
+#### iOS
+
+1. In XCode, in the project navigator, right click `Libraries` ➜ `Add Files to [your project's name]`
+2. Go to `node_modules` ➜ `react-native-exception-handler` and add `ReactNativeExceptionHandler.xcodeproj`
+3. In XCode, in the project navigator, select your project. Add `libReactNativeExceptionHandler.a` to your project's `Build Phases` ➜ `Link Binary With Libraries`
+4. Run your project (`Cmd+R`)<
+
+#### Android
+
+1. Open up `android/app/src/main/java/[...]/MainApplication.java`
+  - Add `import com.masteratul.exceptionhandler.ReactNativeExceptionHandlerPackage;` to the imports at the top of the file
+  - Add `new ReactNativeExceptionHandlerPackage()` to the list returned by the `getPackages()` method
+2. Append the following lines to `android/settings.gradle`:
+  	```
+  	include ':react-native-exception-handler'
+  	project(':react-native-exception-handler').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-exception-handler/android')
+  	```
+3. Insert the following lines inside the dependencies block in `android/app/build.gradle`:
+  	```
+      compile project(':react-native-exception-handler')
+  	```
+
+
+### PLEASE READ BEFORE GOING TO USAGE SECTION
+
+Lets introduce you to the type of errors in a RN app.
+
+- Errors produced by your Javascript code (includes all your react code). We will refer to these errors as  **JS_Exceptions** going forward.
+
+- Errors produced by Native Modules. We will refer to these as **Native_Exceptions** going forward.
+
+Unhandled exceptions leave the app in a critical state.
+
+In case of **JS_Exceptions** you can catch these unhandled exceptions and perform tasks like show alerts or popups, do cleanup or even hit an API to inform the dev teams before closing the app.
+
+In case of **Native_Exceptions** it becomes much worse. While you can catch these unhandled exceptions and perform tasks like cleanup or logout or even hit an API to inform the dev teams before closing the app,
+you CANNOT show a JS alert box or do any UI stuff via JS code. This has to be done via the native methods provided by this module in the repective NATIVE codebase for iOS and android. The module does provide default handlers though :P. So you will get default popups incase of errors. Obviously you can customise them. See CUSTOMIZATION section.
+
+### Usage
+
+To catch **JS_Exceptions**
+```js
+import {setJSExceptionHandler, getJSExceptionHandler} from 'react-native-exception-handler';
+
+.
+.
+
+// registering the error handler (maybe u can do this in the index.android.js or index.ios.js)
+setJSExceptionHandler((error, isFatal) => {
+  // This is your custom global error handler
+  // You do stuff like show an error dialog
+  // or hit google analytics to track crashes
+  // or hit a custom api to inform the dev team.
+});
+
+// getJSExceptionHandler gives the currently set JS exception handler
+const currentHandler = getJSExceptionHandler();
+```                                     
+
+To catch **Native_Exceptions**
+
+```js
+import {setNativeExceptionHandler} from 'react-native-exception-handler/index';
+
+setNativeExceptionHandler((exceptionString) => {
+  // This is your custom global error handler
+  // You do stuff likehit google analytics to track crashes.
+  // or hit a custom api to inform the dev team.
+  //NOTE: alert or showing any UI change via JS
+  //WILL NOT WORK in case of NATIVE ERRORS.
+});
+
+```
+It is recommended you set both the handlers.
+
+**See the examples to know more**                   
+
+
+### CUSTOMIZATION
+
+#### Customizing **setJSExceptionHandler**.
+In case of `setJSExceptionHandler` you can do everything that is possible. Hence there is not much to customize here.
+```js
+const errorHandler = (error, isFatal) => {
+  // This is your custom global error handler
+  // You do stuff like show an error dialog
+  // or hit google analytics to track crashes
+  // or hit a custom api to inform the dev team.
+})
+//Second argument is a boolean with a default value of false if unspecified.
+//If set to true the handler to be called in place of RED screen
+//in development mode also.
+setJSExceptionHandler(errorHandler, true);
+```
+
+#### Customizing **setNativeExceptionHandler**
+
+By default whenever a **Native_Exceptions** occurs if you have used `setNativeExceptionHandler`, **along with the callback specified** you would see a popup (this is the default native handler set by this module).
+
+In Android you will see something like
+
+<br>
+<div style="text-align:center">
+  <img src="https://github.com/master-atul/react-native-exception-handler/raw/master/screens/android_native_exception.png" style="width: 50%;display: inline;">
+</div>
+<br>
+
+In iOS you will see something like
+
+<br>
+<div style="text-align:center">
+  <img src="https://github.com/master-atul/react-native-exception-handler/raw/master/screens/ios_native_exception.png" style="width: 50%;display: inline;">
+</div>
+<br>
+
+**Modifying Android Native Exception handler UI** (NATIVE CODE HAS TO BE WRITTEN) *recommended that you do this in android studio*
+
+- Create an Empty Activity in the `android/app/src/main/java/[...]/`. For example lets say CustomErrorDialog.java
+- Customize your activity to look and behave however you need it to be.
+- In the `android/app/src/main/java/[...]/MainApplication.java`
+
+```java
+import com.masteratul.exceptionhandler.ReactNativeExceptionHandlerModule;
+import <yourpackage>.YourCustomActivity; //This is your CustomErrorDialog.java
+...
+...
+...
+public class MainApplication extends Application implements ReactApplication {
+...
+...
+  @Override
+  public void onCreate() {
+    ....
+    ....
+    ....
+    ReactNativeExceptionHandlerModule.replaceErrorScreenActivityClass(YourCustomActivity.class); //This will replace the native error handler popup with your own custom activity.
+  }
+
+```
+
+**Modifying iOS Native Exception handler UI** (NATIVE CODE HAS TO BE WRITTEN) *recommended that you do this in XCode*
+
+Unlike Android, in the case of iOS, there is no way to restart the app if it has crashed. Also, during a **Native_Exceptions** the UI becomes quite unstable since the exception occured on the main UI thread. Hence, none of the click or press handlers would work either.
+
+Keeping in mind of these, at the most we can just show the user a dialog and inform the user to reopen the app.
+
+If you noticed the default native exception popup does exactly that. To customize the UI for the popup.
+
+- In XCode, open the file `AppDelegate.m`
+
+```c
+
+#import "AppDelegate.h"
+
+#import <React/RCTBundleURLProvider.h>
+#import <React/RCTRootView.h>
+
+//Add the header file
+#import "ReactNativeExceptionHandler.h"
+...
+...
+@implementation AppDelegate
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+...
+...
+
+[ReactNativeExceptionHandler replaceNativeExceptionHandlerBlock:^(NSException *exception, NSString *readeableException){
+
+    // THE CODE YOU WRITE HERE WILL REPLACE THE EXISTING NATIVE POPUP THAT COMES WITH THIS MODULE.
+    //We create an alert box
+    UIAlertController* alert = [UIAlertController
+                                alertControllerWithTitle:@"Critical error occurred"
+                                message: [NSString stringWithFormat:@"%@\n%@",
+                                          @"Appologies..The app will close now \nPlease restart the app\n",
+                                          readeableException]
+                                preferredStyle:UIAlertControllerStyleAlert];
+
+    // We show the alert box using the rootViewController
+    [rootViewController presentViewController:alert animated:YES completion:nil];
+
+    // THIS IS THE IMPORTANT PART
+    // By default when an exception is raised we will show an alert box as per our code.
+    // But since our buttons wont work because our click handlers wont work.
+    // to close the app or to remove the UI lockup on exception.
+    // we need to call this method
+    // [ReactNativeExceptionHandler releaseExceptionHold]; // to release the lock and let the app crash.
+
+    // Hence we set a timer of 4 secs and then call the method releaseExceptionHold to quit the app after
+    // 4 secs of showing the popup
+    [NSTimer scheduledTimerWithTimeInterval:4.0
+                                     target:[ReactNativeExceptionHandler class]
+                                   selector:@selector(releaseExceptionHold)
+                                   userInfo:nil
+                                    repeats:NO];
+
+    // or  you can call
+    // [ReactNativeExceptionHandler releaseExceptionHold]; when you are done to release the UI lock.
+  }];
+
+...
+...
+...
+
+ return YES;
+}
+
+@end
+
+```
+
+What is this `[ReactNativeExceptionHandler releaseExceptionHold];`?
+
+In case of iOS we lock the UI thread after we show our popup to prevent the app from closing.
+Hence once we are done showing the popup we need to close our app after some time.
+But since our buttons wont work as our click handlers wont work (explained before).
+To close the app or to remove the UI lockup on exception, we need to call this method
+`[ReactNativeExceptionHandler releaseExceptionHold];`
+
+Hence we set a timer of 4 secs and then call the method releaseExceptionHold to quit the app after
+4 secs of showing the popup
+```c
+[NSTimer scheduledTimerWithTimeInterval:4.0
+                                 target:[ReactNativeExceptionHandler class]
+                               selector:@selector(releaseExceptionHold)
+                               userInfo:nil
+                                repeats:NO];
+```
 
 ### Examples
 
@@ -117,6 +327,16 @@ const errorHandler = (e, isFatal) => {
 };
 
 setJSExceptionHandler(errorHandler);
+
+setNativeExceptionHandler((errorString) => {
+    //You can do something like call an api to report to dev team here
+    ...
+    ...
+   // When you call setNativeExceptionHandler, react-native-exception-handler sets a  
+   // Native Exception Handler popup which supports restart on error in case of android.
+   // In case of iOS, it is not possible to restart the app programmatically, so we just show an error popup and close the app.
+   // To customize the popup screen take a look at CUSTOMIZATION section.
+});
 ```
 
 #### Bug Capture to dev team example
@@ -157,15 +377,32 @@ const errorHandler = (e, isFatal) => {
 };
 
 setJSExceptionHandler(errorHandler);
+
+setNativeExceptionHandler((errorString) => {
+    //You can do something like call an api to report to dev team here
+    //example
+    // fetch('http://<YOUR API TO REPORT TO DEV TEAM>?error='+errorString);
+    //
+});
+
 ```
 
 *More Examples can be found in the examples folder*
 - Preserving old handler (thanks to zeh)
 
-## NOTES
-1. This module only helps in catching the runtime errors in JS. Native errors can still crash your app without any prompt.
-
 
 ## CONTRIBUTORS
 - [Atul R](https://github.com/master-atul)
 - [Zeh Fernando](https://github.com/zeh)
+
+
+## TESTING NATIVE EXCEPTIONS/ERRORS
+
+To make sure this module works. You can generate a native exception using the module `rn-test-exception-handler`.
+[https://github.com/master-atul/rn-test-exception-handler](https://github.com/master-atul/rn-test-exception-handler)
+
+`rn-test-exception-handler` module does only one thing. It raises a **Native_Exceptions**.
+This will help you to verify your customizations or functionality of this module.
+
+
+Peace ! ✌🏻🍻

@@ -1,3 +1,8 @@
+
+import {NativeModules} from 'react-native';
+
+const {ReactNativeExceptionHandler} = NativeModules;
+
 const noop = () => {};
 
 export const setJSExceptionHandler = (customHandler = noop, allowedInDevMode = false) => {
@@ -11,7 +16,15 @@ export const setJSExceptionHandler = (customHandler = noop, allowedInDevMode = f
 
 export const getJSExceptionHandler = () => global.ErrorUtils.getGlobalHandler();
 
+export const setNativeExceptionHandler = (customErrorHandler = noop) => {
+  if (typeof customErrorHandler !== 'function') {
+    customErrorHandler = noop;
+  }
+  ReactNativeExceptionHandler.setHandlerforNativeException(customErrorHandler);
+};
+
 export default {
   setJSExceptionHandler,
-  getJSExceptionHandler
+  getJSExceptionHandler,
+  setNativeExceptionHandler
 };
