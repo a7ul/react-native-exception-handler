@@ -163,21 +163,12 @@ setJSExceptionHandler(errorHandler, true);
 
 By default whenever a **Native_Exceptions** occurs if you have used `setNativeExceptionHandler`, **along with the callback specified** you would see a popup (this is the default native handler set by this module).
 
-In Android you will see something like
+In Android and iOS you will see something like
 
-<br>
-<div style="text-align:center">
-  <img src="https://github.com/master-atul/react-native-exception-handler/raw/master/screens/android_native_exception.png" style="width: 50%;display: inline;">
-</div>
-<br>
-
-In iOS you will see something like
-
-<br>
-<div style="text-align:center">
-  <img src="https://github.com/master-atul/react-native-exception-handler/raw/master/screens/ios_native_exception.png" style="width: 50%;display: inline;">
-</div>
-<br>
+<p align="center">
+  <img src="https://github.com/master-atul/react-native-exception-handler/raw/master/screens/android_native_exception.png" width="300"/>
+  <img src="https://github.com/master-atul/react-native-exception-handler/raw/master/screens/ios_native_exception.png" width="300"/>
+</p>
 
 **Modifying Android Native Exception handler UI** (NATIVE CODE HAS TO BE WRITTEN) *recommended that you do this in android studio*
 
