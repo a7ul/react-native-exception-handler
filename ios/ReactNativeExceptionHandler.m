@@ -1,4 +1,5 @@
 #import "ReactNativeExceptionHandler.h"
+#import  <UIKit/UIKit.h>
 #include <libkern/OSAtomic.h>
 #include <execinfo.h>
 
@@ -20,20 +21,35 @@ const NSInteger UncaughtExceptionHandlerReportAddressCount = 5;
 }
 
 bool dismissed = true;
-void (^blockHolder)(NSException *exception, NSString *readeableException);
 
-+ (void)callOnException:(void (^)(NSException *exception, NSString *readeableException))callbackBlock {
-    blockHolder = callbackBlock;
-    NSSetUncaughtExceptionHandler(&HandleException);
-    signal(SIGABRT, SignalHandler);
-    signal(SIGILL, SignalHandler);
-    signal(SIGSEGV, SignalHandler);
-    signal(SIGFPE, SignalHandler);
-    signal(SIGBUS, SignalHandler);
-    signal(SIGPIPE, SignalHandler);
-    NSLog(@"REGISTERED RN EXCEPTION HANDLER");
+void (^nativeErrorCallbackBlock)(NSException *exception, NSString *readeableException);
+void (^jsErrorCallbackBlock)(NSException *exception, NSString *readeableException);
+
+
+void (^defaultNativeErrorCallbackBlock)(NSException *exception, NSString *readeableException) =
+^(NSException *exception, NSString *readeableException){
+    
+    UIAlertController* alert = [UIAlertController
+                                alertControllerWithTitle:@"Bug Captured"
+                                message: readeableException
+                                preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIApplication* app = [UIApplication sharedApplication];
+    UIViewController * rootViewController = app.delegate.window.rootViewController;
+    [rootViewController presentViewController:alert animated:YES completion:nil];
+    
+    [NSTimer scheduledTimerWithTimeInterval:5.0
+                                     target:[ReactNativeExceptionHandler class]
+                                   selector:@selector(releaseErrorHandler)
+                                   userInfo:nil
+                                    repeats:NO];
+};
+
+
++ (void) setNativeExceptionHandlerBlock:(void (^)(NSException *exception, NSString *readeableException))nativeCallbackBlock{
+    NSLog(@"SET THE CALLBACK HANDLER NATTTIVEEE");
+    nativeErrorCallbackBlock = nativeCallbackBlock;
 }
-
 
 + (void) releaseErrorHandler {
     dismissed = true;
@@ -47,7 +63,12 @@ void (^blockHolder)(NSException *exception, NSString *readeableException);
                                  [[exception userInfo] objectForKey:UncaughtExceptionHandlerAddressesKey]];
     dismissed = false;
     
-    blockHolder(exception,readeableError);
+    if(nativeErrorCallbackBlock != nil){
+        nativeErrorCallbackBlock(exception,readeableError);
+    }else{
+        defaultNativeErrorCallbackBlock(exception,readeableError);
+    }
+    jsErrorCallbackBlock(exception,readeableError);
     
     CFRunLoopRef runLoop = CFRunLoopGetCurrent();
     CFArrayRef allModes = CFRunLoopCopyAllModes(runLoop);
@@ -159,8 +180,22 @@ void SignalHandler(int signal)
     return backtrace;
 }
 
+RCT_EXPORT_MODULE();
 
-
-RCT_EXPORT_MODULE()
+RCT_EXPORT_METHOD(setiOSNativeExceptionHandler:(RCTResponseSenderBlock)callback)
+{
+    jsErrorCallbackBlock = ^(NSException *exception, NSString *readeableException){
+        callback(@[readeableException]);
+    };
+    
+    NSSetUncaughtExceptionHandler(&HandleException);
+    signal(SIGABRT, SignalHandler);
+    signal(SIGILL, SignalHandler);
+    signal(SIGSEGV, SignalHandler);
+    signal(SIGFPE, SignalHandler);
+    signal(SIGBUS, SignalHandler);
+    signal(SIGPIPE, SignalHandler);
+    NSLog(@"REGISTERED RN EXCEPTION HANDLER");
+}
 
 @end
