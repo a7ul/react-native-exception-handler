@@ -16,7 +16,6 @@ public class ReactNativeExceptionHandlerPackage implements ReactPackage {
       return Arrays.<NativeModule>asList(new ReactNativeExceptionHandlerModule(reactContext));
     }
 
-    @Override
     public List<Class<? extends JavaScriptModule>> createJSModules() {
       return Collections.emptyList();
     }
