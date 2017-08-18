@@ -385,6 +385,7 @@ setNativeExceptionHandler((errorString) => {
 ## CONTRIBUTORS
 - [Atul R](https://github.com/master-atul)
 - [Zeh Fernando](https://github.com/zeh)
+- [Fred Chasen](https://github.com/fchasen)
 
 
 ## TESTING NATIVE EXCEPTIONS/ERRORS
