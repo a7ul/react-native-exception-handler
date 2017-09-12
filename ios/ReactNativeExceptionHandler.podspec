@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
   s.name         = "ReactNativeExceptionHandler"
   s.summary      = "A react native module that lets you to register a global error handler that can capture fatal/non fatal uncaught exceptions"
-  s.version      = "2.1.0"
+  s.version      = "2.2.0"
   s.description  = <<-DESC
                    A react native module that lets you to register a global error handler that can capture fatal/non fatal uncaught exceptions.
                    The module helps prevent abrupt crashing of RN Apps without a graceful message to the user.
