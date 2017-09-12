@@ -1,24 +1,20 @@
 
 Pod::Spec.new do |s|
   s.name         = "ReactNativeExceptionHandler"
+  s.summary      = "A react native module that lets you to register a global error handler that can capture fatal/non fatal uncaught exceptions"
   s.version      = "1.0.0"
-  s.summary      = "ReactNativeExceptionHandler"
   s.description  = <<-DESC
-                  ReactNativeExceptionHandler
+                   A react native module that lets you to register a global error handler that can capture fatal/non fatal uncaught exceptions.
+                   The module helps prevent abrupt crashing of RN Apps without a graceful message to the user.
                    DESC
-  s.homepage     = ""
+  s.homepage     = "https://github.com/master-atul/react-native-exception-handler"
   s.license      = "MIT"
-  # s.license      = { :type => "MIT", :file => "FILE_LICENSE" }
-  s.author             = { "author" => "author@domain.cn" }
+  s.author       = { "Atul R" => "atulanand94@gmail.com" }
   s.platform     = :ios, "7.0"
   s.source       = { :git => "https://github.com/author/ReactNativeExceptionHandler.git", :tag => "master" }
   s.source_files  = "ReactNativeExceptionHandler/**/*.{h,m}"
   s.requires_arc = true
 
-
   s.dependency "React"
-  #s.dependency "others"
 
 end
-
-  
