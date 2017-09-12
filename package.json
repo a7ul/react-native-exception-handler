@@ -1,6 +1,6 @@
 {
     "name": "react-native-exception-handler",
-    "version": "2.1.0",
+    "version": "2.2.0",
     "description": "A react native module that lets you to register a global error handler that can capture fatal/non fatal uncaught exceptions.",
     "main": "index.js",
     "scripts": {
