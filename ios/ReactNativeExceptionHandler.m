@@ -2,13 +2,13 @@
 
 
 // CONSTANTS
-NSString * const UncaughtExceptionHandlerSignalExceptionName = @"UncaughtExceptionHandlerSignalExceptionName";
-NSString * const UncaughtExceptionHandlerSignalKey = @"UncaughtExceptionHandlerSignalKey";
-NSString * const UncaughtExceptionHandlerAddressesKey = @"UncaughtExceptionHandlerAddressesKey";
-volatile int32_t UncaughtExceptionCount = 0;
-const int32_t UncaughtExceptionMaximum = 10;
-const NSInteger UncaughtExceptionHandlerSkipAddressCount = 4;
-const NSInteger UncaughtExceptionHandlerReportAddressCount = 5;
+NSString * const RNUncaughtExceptionHandlerSignalExceptionName = @"RNUncaughtExceptionHandlerSignalExceptionName";
+NSString * const RNUncaughtExceptionHandlerSignalKey = @"RNUncaughtExceptionHandlerSignalKey";
+NSString * const RNUncaughtExceptionHandlerAddressesKey = @"RNUncaughtExceptionHandlerAddressesKey";
+volatile int32_t RNUncaughtExceptionCount = 0;
+const int32_t RNUncaughtExceptionMaximum = 10;
+const NSInteger RNUncaughtExceptionHandlerSkipAddressCount = 4;
+const NSInteger RNUncaughtExceptionHandlerReportAddressCount = 5;
 
 
 @implementation ReactNativeExceptionHandler
@@ -34,18 +34,18 @@ void (^jsErrorCallbackBlock)(NSException *exception, NSString *readeableExceptio
 //variable that holds the default native error handler
 void (^defaultNativeErrorCallbackBlock)(NSException *exception, NSString *readeableException) =
 ^(NSException *exception, NSString *readeableException){
-    
+
     UIAlertController* alert = [UIAlertController
                                 alertControllerWithTitle:@"Unexpected error occured"
                                 message:[NSString stringWithFormat:@"%@\n%@",
                                          @"Appologies..The app will close now \nPlease restart the app\n",
                                          readeableException]
                                 preferredStyle:UIAlertControllerStyleAlert];
-    
+
     UIApplication* app = [UIApplication sharedApplication];
     UIViewController * rootViewController = app.delegate.window.rootViewController;
     [rootViewController presentViewController:alert animated:YES completion:nil];
-    
+
     [NSTimer scheduledTimerWithTimeInterval:5.0
                                      target:[ReactNativeExceptionHandler class]
                                    selector:@selector(releaseExceptionHold)
@@ -66,7 +66,7 @@ RCT_EXPORT_METHOD(setHandlerforNativeException:(RCTResponseSenderBlock)callback)
     jsErrorCallbackBlock = ^(NSException *exception, NSString *readeableException){
         callback(@[readeableException]);
     };
-    
+
     NSSetUncaughtExceptionHandler(&HandleException);
     signal(SIGABRT, SignalHandler);
     signal(SIGILL, SignalHandler);
@@ -102,16 +102,16 @@ RCT_EXPORT_METHOD(setHandlerforNativeException:(RCTResponseSenderBlock)callback)
 {
     NSString * readeableError = [NSString stringWithFormat:NSLocalizedString(@"%@\n%@", nil),
                                  [exception reason],
-                                 [[exception userInfo] objectForKey:UncaughtExceptionHandlerAddressesKey]];
+                                 [[exception userInfo] objectForKey:RNUncaughtExceptionHandlerAddressesKey]];
     dismissApp = false;
-    
+
     if(nativeErrorCallbackBlock != nil){
         nativeErrorCallbackBlock(exception,readeableError);
     }else{
         defaultNativeErrorCallbackBlock(exception,readeableError);
     }
     jsErrorCallbackBlock(exception,readeableError);
-    
+
     CFRunLoopRef runLoop = CFRunLoopGetCurrent();
     CFArrayRef allModes = CFRunLoopCopyAllModes(runLoop);
     while (!dismissApp)
@@ -126,9 +126,9 @@ RCT_EXPORT_METHOD(setHandlerforNativeException:(RCTResponseSenderBlock)callback)
             i++;
         }
     }
-    
+
     CFRelease(allModes);
-    
+
     NSSetUncaughtExceptionHandler(NULL);
     signal(SIGABRT, SIG_DFL);
     signal(SIGILL, SIG_DFL);
@@ -136,8 +136,8 @@ RCT_EXPORT_METHOD(setHandlerforNativeException:(RCTResponseSenderBlock)callback)
     signal(SIGFPE, SIG_DFL);
     signal(SIGBUS, SIG_DFL);
     signal(SIGPIPE, SIG_DFL);
-    
-    kill(getpid(), [[[exception userInfo] objectForKey:UncaughtExceptionHandlerSignalKey] intValue]);
+
+    kill(getpid(), [[[exception userInfo] objectForKey:RNUncaughtExceptionHandlerSignalKey] intValue]);
 
 }
 
@@ -148,19 +148,19 @@ RCT_EXPORT_METHOD(setHandlerforNativeException:(RCTResponseSenderBlock)callback)
 
 void HandleException(NSException *exception)
 {
-    int32_t exceptionCount = OSAtomicIncrement32(&UncaughtExceptionCount);
-    if (exceptionCount > UncaughtExceptionMaximum)
+    int32_t exceptionCount = OSAtomicIncrement32(&RNUncaughtExceptionCount);
+    if (exceptionCount > RNUncaughtExceptionMaximum)
     {
         return;
     }
-    
+
     NSArray *callStack = [ReactNativeExceptionHandler backtrace];
     NSMutableDictionary *userInfo =
     [NSMutableDictionary dictionaryWithDictionary:[exception userInfo]];
     [userInfo
      setObject:callStack
-     forKey:UncaughtExceptionHandlerAddressesKey];
-    
+     forKey:RNUncaughtExceptionHandlerAddressesKey];
+
     [[[ReactNativeExceptionHandler alloc] init]
      performSelectorOnMainThread:@selector(handleException:)
      withObject:
@@ -173,27 +173,27 @@ void HandleException(NSException *exception)
 
 void SignalHandler(int signal)
 {
-    int32_t exceptionCount = OSAtomicIncrement32(&UncaughtExceptionCount);
-    if (exceptionCount > UncaughtExceptionMaximum)
+    int32_t exceptionCount = OSAtomicIncrement32(&RNUncaughtExceptionCount);
+    if (exceptionCount > RNUncaughtExceptionMaximum)
     {
         return;
     }
-    
+
     NSMutableDictionary *userInfo =
     [NSMutableDictionary
      dictionaryWithObject:[NSNumber numberWithInt:signal]
-     forKey:UncaughtExceptionHandlerSignalKey];
-    
+     forKey:RNUncaughtExceptionHandlerSignalKey];
+
     NSArray *callStack = [ReactNativeExceptionHandler backtrace];
     [userInfo
      setObject:callStack
-     forKey:UncaughtExceptionHandlerAddressesKey];
-    
+     forKey:RNUncaughtExceptionHandlerAddressesKey];
+
     [[[ReactNativeExceptionHandler alloc] init]
      performSelectorOnMainThread:@selector(handleException:)
      withObject:
      [NSException
-      exceptionWithName:UncaughtExceptionHandlerSignalExceptionName
+      exceptionWithName:RNUncaughtExceptionHandlerSignalExceptionName
       reason:
       [NSString stringWithFormat:
        NSLocalizedString(@"Signal %d was raised.", nil),
@@ -201,7 +201,7 @@ void SignalHandler(int signal)
       userInfo:
       [NSDictionary
        dictionaryWithObject:[NSNumber numberWithInt:signal]
-       forKey:UncaughtExceptionHandlerSignalKey]]
+       forKey:RNUncaughtExceptionHandlerSignalKey]]
      waitUntilDone:YES];
 }
 
@@ -215,19 +215,19 @@ void SignalHandler(int signal)
     void* callstack[128];
     int frames = backtrace(callstack, 128);
     char **strs = backtrace_symbols(callstack, frames);
-    
+
     int i;
     NSMutableArray *backtrace = [NSMutableArray arrayWithCapacity:frames];
     for (
-         i = UncaughtExceptionHandlerSkipAddressCount;
-         i < UncaughtExceptionHandlerSkipAddressCount +
-         UncaughtExceptionHandlerReportAddressCount;
+         i = RNUncaughtExceptionHandlerSkipAddressCount;
+         i < RNUncaughtExceptionHandlerSkipAddressCount +
+         RNUncaughtExceptionHandlerReportAddressCount;
          i++)
     {
         [backtrace addObject:[NSString stringWithUTF8String:strs[i]]];
     }
     free(strs);
-    
+
     return backtrace;
 }
 
