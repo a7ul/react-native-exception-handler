@@ -17,11 +17,11 @@ export const setJSExceptionHandler = (customHandler = noop, allowedInDevMode = f
 
 export const getJSExceptionHandler = () => global.ErrorUtils.getGlobalHandler();
 
-export const setNativeExceptionHandler = (customErrorHandler = noop) => {
+export const setNativeExceptionHandler = (customErrorHandler = noop, forceApplicationToQuit = true) => {
   if (typeof customErrorHandler !== 'function') {
     customErrorHandler = noop;
   }
-  ReactNativeExceptionHandler.setHandlerforNativeException(customErrorHandler);
+  ReactNativeExceptionHandler.setHandlerforNativeException(forceApplicationToQuit, customErrorHandler);
 };
 
 export default {
