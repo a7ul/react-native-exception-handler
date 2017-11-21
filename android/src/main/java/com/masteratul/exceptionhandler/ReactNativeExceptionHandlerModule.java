@@ -50,6 +50,8 @@ public class ReactNativeExceptionHandlerModule extends ReactContextBaseJavaModul
               i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             
               activity.startActivity(i);
+              activity.finish();
+            
               if (forceToQuit)
                 System.exit(0);
           }
