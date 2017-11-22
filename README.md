@@ -381,6 +381,14 @@ setNativeExceptionHandler((errorString) => {
 *More Examples can be found in the examples folder*
 - Preserving old handler (thanks to zeh)
 
+#### react-native-navigation (Wix)
+
+When you use the [wix library](http://wix.github.io/react-native-navigation/) to navigate, you need to add a *false* parameter to _setNativeExceptionHandler_. Otherwise it will recreate the application above the crash screen.
+
+```js
+setNativeExceptionHandler(nativeErrorCallback, false);
+```
+
 
 ## CONTRIBUTORS
 - [Atul R](https://github.com/master-atul)
