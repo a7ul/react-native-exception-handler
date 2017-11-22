@@ -1,5 +1,5 @@
 
-import {NativeModules} from 'react-native';
+import {NativeModules, Platform} from 'react-native';
 
 const {ReactNativeExceptionHandler} = NativeModules;
 
@@ -21,7 +21,12 @@ export const setNativeExceptionHandler = (customErrorHandler = noop, forceApplic
   if (typeof customErrorHandler !== 'function') {
     customErrorHandler = noop;
   }
-  ReactNativeExceptionHandler.setHandlerforNativeException(forceApplicationToQuit, customErrorHandler);
+  
+  if (Platform.OS === 'ios') {
+    ReactNativeExceptionHandler.setHandlerforNativeException(customErrorHandler);
+  } else {
+    ReactNativeExceptionHandler.setHandlerforNativeException(forceApplicationToQuit, customErrorHandler);
+  }
 };
 
 export default {
