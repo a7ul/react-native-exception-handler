@@ -28,9 +28,8 @@ public class ReactNativeExceptionHandlerModule extends ReactContextBaseJavaModul
 
 
   @ReactMethod
-  public void setHandlerforNativeException(Callback customHandler, final boolean forceToQuit){
+  public void setHandlerforNativeException(Callback customHandler){
       callbackHolder = customHandler;
-
       Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
           @Override
           public void uncaughtException(Thread thread, Throwable throwable) {
@@ -38,19 +37,12 @@ public class ReactNativeExceptionHandlerModule extends ReactContextBaseJavaModul
               String stackTraceString = Log.getStackTraceString(throwable);
               callbackHolder.invoke(stackTraceString);
               Log.d("ERROR",stackTraceString);
-
-            
               Intent i = new Intent();
               i.setClass(activity, errorIntentTargetClass);
               i.putExtra("stack_trace_string",stackTraceString);
               i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            
               activity.startActivity(i);
-              activity.finish();
-            
-              if (forceToQuit) {
-                System.exit(0);
-              }
+              System.exit(0);
           }
       });
   }
