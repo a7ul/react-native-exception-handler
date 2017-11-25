@@ -381,9 +381,20 @@ setNativeExceptionHandler((errorString) => {
 *More Examples can be found in the examples folder*
 - Preserving old handler (thanks to zeh)
 
-#### react-native-navigation (Wix)
+# Known issues and fixes: 
 
-When you use the [wix library](http://wix.github.io/react-native-navigation/) to navigate, you need to add a *false* parameter to _setNativeExceptionHandler_. Otherwise it will recreate the application above the crash screen.
+### react-native-navigation (Wix)
+
+This is specifically occuring when you use [wix library](http://wix.github.io/react-native-navigation/) for navigation along with react-native-exception-handler. Whenever an error occurs, it will recreate the application above the crash screen.
+
+
+**Fix:**
+
+ You need to set second parametera as *false* while calling _setNativeExceptionHandler_. 
+ The second parameter is an android specific field which stands for forceQuitOnError.
+ When set to false it doesnt quit the app forcefully on error. In short :
+ 
+ Credit goes to **Gustavo Fão Valvassori**
 
 ```js
 setNativeExceptionHandler(nativeErrorCallback, false);
@@ -396,7 +407,7 @@ setNativeExceptionHandler(nativeErrorCallback, false);
 - [Fred Chasen](https://github.com/fchasen)
 - [Christoph Jerolimov](https://github.com/jerolimov)
 - [Peter Chow](https://github.com/peteroid)
-
+- [Gustavo Fão Valvassori](https://github.com/faogustavo)
 ## TESTING NATIVE EXCEPTIONS/ERRORS
 
 To make sure this module works. You can generate a native exception using the module `rn-test-exception-handler`.

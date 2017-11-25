@@ -25,7 +25,7 @@ export const setNativeExceptionHandler = (customErrorHandler = noop, forceApplic
   if (Platform.OS === 'ios') {
     ReactNativeExceptionHandler.setHandlerforNativeException(customErrorHandler);
   } else {
-    ReactNativeExceptionHandler.setHandlerforNativeException(forceApplicationToQuit, customErrorHandler);
+    ReactNativeExceptionHandler.setHandlerforNativeException(customErrorHandler, forceApplicationToQuit);
   }
 };
 
