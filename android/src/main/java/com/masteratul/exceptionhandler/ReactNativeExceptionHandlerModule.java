@@ -29,7 +29,7 @@ public class ReactNativeExceptionHandlerModule extends ReactContextBaseJavaModul
 
   @ReactMethod
   public void setHandlerforNativeException(Callback customHandler, final boolean forceToQuit){
-      this.callbackHolder = customHandler;
+      callbackHolder = customHandler;
 
       Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
           @Override
@@ -37,10 +37,8 @@ public class ReactNativeExceptionHandlerModule extends ReactContextBaseJavaModul
               activity = getCurrentActivity();
               String stackTraceString = Log.getStackTraceString(throwable);
               callbackHolder.invoke(stackTraceString);
-            
-              if (BuildConfig.DEBUG) {
-                  Log.d("ERROR",stackTraceString);
-              }
+              Log.d("ERROR",stackTraceString);
+
             
               Intent i = new Intent();
               i.setClass(activity, errorIntentTargetClass);
