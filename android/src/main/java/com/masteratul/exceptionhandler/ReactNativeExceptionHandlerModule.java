@@ -28,7 +28,7 @@ public class ReactNativeExceptionHandlerModule extends ReactContextBaseJavaModul
 
 
   @ReactMethod
-  public void setHandlerforNativeException(Callback customHandler, final boolean forceToQuit){
+  public void setHandlerforNativeException(final boolean forceToQuit, Callback customHandler){
       callbackHolder = customHandler;
 
       Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
