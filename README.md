@@ -381,7 +381,7 @@ setNativeExceptionHandler((errorString) => {
 *More Examples can be found in the examples folder*
 - Preserving old handler (thanks to zeh)
 
-# Known issues and fixes: 
+# Known issues and fixes:
 
 ### react-native-navigation (Wix)
 
@@ -390,10 +390,10 @@ This is specifically occuring when you use [wix library](http://wix.github.io/re
 
 **Fix:**
 
- You need to set second parametera as *false* while calling _setNativeExceptionHandler_. 
+ You need to set second parametera as *false* while calling _setNativeExceptionHandler_.
  The second parameter is an android specific field which stands for forceQuitOnError.
  When set to false it doesnt quit the app forcefully on error. In short :
- 
+
  Credit goes to **Gustavo Fão Valvassori**
 
 ```js
@@ -408,6 +408,8 @@ setNativeExceptionHandler(nativeErrorCallback, false);
 - [Christoph Jerolimov](https://github.com/jerolimov)
 - [Peter Chow](https://github.com/peteroid)
 - [Gustavo Fão Valvassori](https://github.com/faogustavo)
+- [Alessandro Agosto](https://github.com/lexor90)
+
 ## TESTING NATIVE EXCEPTIONS/ERRORS
 
 To make sure this module works. You can generate a native exception using the module `rn-test-exception-handler`.
