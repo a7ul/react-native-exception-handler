@@ -17,7 +17,20 @@ export const setJSExceptionHandler = (customHandler = noop, allowedInDevMode = f
 
 export const getJSExceptionHandler = () => global.ErrorUtils.getGlobalHandler();
 
-export const setNativeExceptionHandler = (customErrorHandler = noop, forceApplicationToQuit = true) => {
+export const setNativeExceptionHandler = (forceApplicationToQuit = true, customErrorHandler = noop) => {
+  var handler = customErrorHandler;
+
+  // backward compatible API
+  if (typeof forceApplicationToQuit === 'function') {
+    handler = forceApplicationToQuit;
+  }
+
+  if (typeof customErrorHandler === 'boolean') {
+    forceApplicationToQuit = customErrorHandler;
+  }
+
+  customErrorHandler = handler;
+
   if (typeof customErrorHandler !== 'function') {
     customErrorHandler = noop;
   }
@@ -25,7 +38,7 @@ export const setNativeExceptionHandler = (customErrorHandler = noop, forceApplic
   if (Platform.OS === 'ios') {
     ReactNativeExceptionHandler.setHandlerforNativeException(customErrorHandler);
   } else {
-    ReactNativeExceptionHandler.setHandlerforNativeException(customErrorHandler, forceApplicationToQuit);
+    ReactNativeExceptionHandler.setHandlerforNativeException(forceApplicationToQuit, customErrorHandler);
   }
 };
 
