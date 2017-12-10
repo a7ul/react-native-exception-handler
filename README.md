@@ -126,7 +126,7 @@ const currentHandler = getJSExceptionHandler();
 To catch **Native_Exceptions**
 
 ```js
-import {setNativeExceptionHandler} from 'react-native-exception-handler/index';
+import {setNativeExceptionHandler} from 'react-native-exception-handler';
 
 setNativeExceptionHandler((exceptionString) => {
   // This is your custom global error handler
