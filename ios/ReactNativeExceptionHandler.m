@@ -73,7 +73,8 @@ RCT_EXPORT_METHOD(setHandlerforNativeException:(RCTResponseSenderBlock)callback)
     signal(SIGSEGV, SignalHandler);
     signal(SIGFPE, SignalHandler);
     signal(SIGBUS, SignalHandler);
-    signal(SIGPIPE, SignalHandler);
+    //signal(SIGPIPE, SignalHandler);
+    //Removing SIGPIPE as per https://github.com/master-atul/react-native-exception-handler/issues/32
     NSLog(@"REGISTERED RN EXCEPTION HANDLER");
 }
 
