@@ -230,7 +230,7 @@ If you noticed the default native exception popup does exactly that. To customiz
     UIAlertController* alert = [UIAlertController
                                 alertControllerWithTitle:@"Critical error occurred"
                                 message: [NSString stringWithFormat:@"%@\n%@",
-                                          @"Appologies..The app will close now \nPlease restart the app\n",
+                                          @"Apologies..The app will close now \nPlease restart the app\n",
                                           readeableException]
                                 preferredStyle:UIAlertControllerStyleAlert];
 
