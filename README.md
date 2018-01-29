@@ -412,7 +412,7 @@ setNativeExceptionHandler(nativeErrorCallback, false);
 - [robinxb](https://github.com/robinxb)
 - [Gant Laborde](https://github.com/GantMan)
 - [Himanshu Singh](https://github.com/himanshusingh2407)
-- [Paulus Esterhazy](https://github.com/pesterhazy) 
+- [Paulus Esterhazy](https://github.com/pesterhazy)
 
 ## TESTING NATIVE EXCEPTIONS/ERRORS
 
@@ -421,6 +421,7 @@ To make sure this module works. You can generate a native exception using the mo
 
 `rn-test-exception-handler` module does only one thing. It raises a **Native_Exceptions**.
 This will help you to verify your customizations or functionality of this module.
+
 
 
 Peace ! ✌🏻🍻
