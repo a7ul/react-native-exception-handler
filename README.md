@@ -1,5 +1,8 @@
 
-# react-native-exception-handler
+# react-native-exception-handler [NPM](https://img.shields.io/npm/dm/react-native-exception-handler.svg)
+
+[![https://nodei.co/npm/react-native-exception-handler.png?downloads=true&downloadRank=true&stars=true](https://nodei.co/npm/react-native-exception-handler.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/react-native-exception-handler)
+
 
 A react native module that lets you to register a global error handler that can capture fatal/non fatal uncaught exceptions.
 The module helps prevent abrupt crashing of RN Apps without a graceful message to the user.   
