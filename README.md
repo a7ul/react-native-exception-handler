@@ -20,6 +20,9 @@ To tackle this we register a global error handler that could be used to for exam
 **V2 of this module now supports catching Unhandled Native Exceptions also along with the JS Exceptions ✌🏻🍻**
 There are **NO** breaking changes. So its safe to upgrade from v1 to v2. So there is no reason not to 😉.
 
+**Example** repo can be found here: 
+*[https://github.com/master-atul/react-native-exception-handler-example](https://github.com/master-atul/react-native-exception-handler-example) *
+
 ### Screens
 
 ##### Without any error handling
