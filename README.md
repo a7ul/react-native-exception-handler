@@ -419,6 +419,7 @@ setNativeExceptionHandler(nativeErrorCallback, false);
 - [Gant Laborde](https://github.com/GantMan)
 - [Himanshu Singh](https://github.com/himanshusingh2407)
 - [Paulus Esterhazy](https://github.com/pesterhazy)
+- [TomMahle](https://github.com/TomMahle)
 
 ## TESTING NATIVE EXCEPTIONS/ERRORS
 
