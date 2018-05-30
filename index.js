@@ -14,7 +14,8 @@ export const setJSExceptionHandler = (customHandler = noop, allowedInDevMode = f
   const allowed = allowedInDevMode ? true : !__DEV__;
   if (allowed) {
     global.ErrorUtils.setGlobalHandler(customHandler);
-    console.error = (message, error) => global.ErrorUtils.reportError(error); // sending console.error so that it can be caught
+    console.error = (error) => global.ErrorUtils.reportError(error); // sending console.error so that it can be caught
+    console._errorOriginal = (error) => global.ErrorUtils.reportError(error); // overiding console._errorOriginal that is used by ExceptionsManager.handleException
   } else {
     console.log('Skipping setJSExceptionHandler: Reason: In DEV mode and allowedInDevMode = false');
   }
