@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.license      = "MIT"
   s.author       = { "Atul R" => "atulanand94@gmail.com" }
   s.platform     = :ios, "7.0"
-  s.source       = { :git => "https://github.com/author/ReactNativeExceptionHandler.git", :tag => "master" }
+  s.source       = { :git => "https://github.com/master-atul/react-native-exception-handler.git", :tag => "master" }
   s.source_files  = "*.{h,m}"
   s.requires_arc = true
 
