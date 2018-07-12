@@ -77,6 +77,10 @@ or
 3. In XCode, in the project navigator, select your project. Add `libReactNativeExceptionHandler.a` to your project's `Build Phases` ➜ `Link Binary With Libraries`
 4. Run your project (`Cmd+R`)<
 
+##### Using Cocoapods
+1. add `pod 'ReactNativeExceptionHandler', :podspec => '../node_modules/react-native-exception-handler/ios/ReactNativeExceptionHandler.podspec'` to your Podfile
+2. run `pod install`
+
 #### Android
 
 1. Open up `android/app/src/main/java/[...]/MainApplication.java`
