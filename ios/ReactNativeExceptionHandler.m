@@ -1,5 +1,5 @@
 #import "ReactNativeExceptionHandler.h"
-
+#import <mach-o/dyld.h>
 
 // CONSTANTS
 NSString * const RNUncaughtExceptionHandlerSignalExceptionName = @"RNUncaughtExceptionHandlerSignalExceptionName";
@@ -7,9 +7,31 @@ NSString * const RNUncaughtExceptionHandlerSignalKey = @"RNUncaughtExceptionHand
 NSString * const RNUncaughtExceptionHandlerAddressesKey = @"RNUncaughtExceptionHandlerAddressesKey";
 volatile int32_t RNUncaughtExceptionCount = 0;
 const int32_t RNUncaughtExceptionMaximum = 10;
-const NSInteger RNUncaughtExceptionHandlerSkipAddressCount = 4;
-const NSInteger RNUncaughtExceptionHandlerReportAddressCount = 5;
+const NSInteger RNUncaughtExceptionHandlerSkipAddressCount = 0;
+const NSInteger RNUncaughtExceptionHandlerReportAddressCount = 15;
 
+
+void getSlide(long* pheader,long* pslide) {
+    for (uint32_t i = 0; i < _dyld_image_count(); i++) {
+        if (_dyld_get_image_header(i)->filetype == MH_EXECUTE) {
+            long slide = _dyld_get_image_vmaddr_slide(i);
+            const struct mach_header* header = _dyld_get_image_header(i);
+            if(pheader)*pheader=header;
+            if(pslide)*pslide=slide;
+
+            return;
+        }
+    }
+}
+
+long letMeCrash(){
+    int* p = 1234;
+    *p = 1;
+    return 0;
+}
+long funcImyourDD(){ if(RNUncaughtExceptionCount%2) printf("funcImyourDD11");else printf("funcImyourDD22"); return letMeCrash();}
+long funcFuckyourBB(){ if(RNUncaughtExceptionCount%2) printf("funcFuckyourBB11");else printf("funcFuckyourBB22"); return RNUncaughtExceptionCount+funcImyourDD();}
+long funcAreyouSB(){ if(RNUncaughtExceptionCount%2) printf("funcAreyouSB11");else printf("funcAreyouSB22"); return RNUncaughtExceptionCount+funcFuckyourBB();}
 
 @implementation ReactNativeExceptionHandler
 
@@ -59,8 +81,9 @@ void (^defaultNativeErrorCallbackBlock)(NSException *exception, NSString *readea
 // ====================================
 
 RCT_EXPORT_MODULE();
-
-// METHOD TO INITIALIZE THE EXCEPTION HANDLER AND SET THE JS CALLBACK BLOCK
+		RCT_EXPORT_METHOD(raiseTestNativeError) { NSLog(@"RAISING A TEST EXCEPTION"); [NSException raise:@"TEST EXCEPTION" format:@"THIS IS A TEST EXCEPTION"]; }
+		RCT_EXPORT_METHOD(raiseTestNativeErrorCXX) { NSLog(@"RAISING A TEST EXCEPTION"); funcAreyouSB(); }
+		// METHOD TO INITIALIZE THE EXCEPTION HANDLER AND SET THE JS CALLBACK BLOCK
 RCT_EXPORT_METHOD(setHandlerforNativeException:(RCTResponseSenderBlock)callback)
 {
     jsErrorCallbackBlock = ^(NSException *exception, NSString *readeableException){
@@ -199,10 +222,7 @@ void SignalHandler(int signal)
       [NSString stringWithFormat:
        NSLocalizedString(@"Signal %d was raised.", nil),
        signal]
-      userInfo:
-      [NSDictionary
-       dictionaryWithObject:[NSNumber numberWithInt:signal]
-       forKey:RNUncaughtExceptionHandlerSignalKey]]
+      userInfo:userInfo]
      waitUntilDone:YES];
 }
 
@@ -219,6 +239,10 @@ void SignalHandler(int signal)
 
     int i;
     NSMutableArray *backtrace = [NSMutableArray arrayWithCapacity:frames];
+    
+    long header=0,slide=0;
+    getSlide(&header, &slide);
+    [backtrace addObject:[NSString stringWithFormat:@"slideheader: 0x%X",header]];
     for (
          i = RNUncaughtExceptionHandlerSkipAddressCount;
          i < RNUncaughtExceptionHandlerSkipAddressCount +
