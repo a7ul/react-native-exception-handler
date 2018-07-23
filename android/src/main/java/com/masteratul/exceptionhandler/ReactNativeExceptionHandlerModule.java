@@ -1,67 +1,83 @@
 
 package com.masteratul.exceptionhandler;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 
+import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.Callback;
 
 public class ReactNativeExceptionHandlerModule extends ReactContextBaseJavaModule {
 
-  private ReactApplicationContext reactContext;
+    private ReactApplicationContext reactContext;
     private Activity activity;
     private static Class errorIntentTargetClass = DefaultErrorScreen.class;
+    private static NativeExceptionHandlerIfc nativeExceptionHandler;
     private Callback callbackHolder;
     private Thread.UncaughtExceptionHandler originalHandler;
 
     public ReactNativeExceptionHandlerModule(ReactApplicationContext reactContext) {
-    super(reactContext);
-    this.reactContext = reactContext;
-  }
+        super(reactContext);
+        this.reactContext = reactContext;
+    }
 
-  @Override
-  public String getName() {
-    return "ReactNativeExceptionHandler";
-  }
+    @Override
+    public String getName() {
+        return "ReactNativeExceptionHandler";
+    }
 
 
-  @ReactMethod
-  public void setHandlerforNativeException(final boolean forceToQuit, Callback customHandler){
-      callbackHolder = customHandler;
-      originalHandler = Thread.getDefaultUncaughtExceptionHandler();
+    @ReactMethod
+    public void setHandlerforNativeException(
+            final boolean executeOriginalUncaughtExceptionHandler,
+            final boolean forceToQuit,
+            Callback customHandler) {
 
-      Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-          @Override
-          public void uncaughtException(Thread thread, Throwable throwable) {
-              activity = getCurrentActivity();
-              String stackTraceString = Log.getStackTraceString(throwable);
-              callbackHolder.invoke(stackTraceString);
-              Log.d("ERROR",stackTraceString);
+        callbackHolder = customHandler;
+        originalHandler = Thread.getDefaultUncaughtExceptionHandler();
 
-            
-              Intent i = new Intent();
-              i.setClass(activity, errorIntentTargetClass);
-              i.putExtra("stack_trace_string",stackTraceString);
-              i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            
-              activity.startActivity(i);
-              activity.finish();
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
 
-              if (originalHandler != null) {
-                  originalHandler.uncaughtException(thread, throwable);
-              }
+            @Override
+            public void uncaughtException(Thread thread, Throwable throwable) {
 
-              if (forceToQuit) {
-                System.exit(0);
-              }
-          }
-      });
-  }
+                String stackTraceString = Log.getStackTraceString(throwable);
+                callbackHolder.invoke(stackTraceString);
 
-   public static void replaceErrorScreenActivityClass(Class errorScreenActivityClass){
-       errorIntentTargetClass = errorScreenActivityClass;
-   }
+                if (executeOriginalUncaughtExceptionHandler && originalHandler != null) {
+                    originalHandler.uncaughtException(thread, throwable);
+                }
+
+                if (nativeExceptionHandler != null) {
+                    nativeExceptionHandler.handleNativeException(thread, throwable);
+                } else {
+                    activity = getCurrentActivity();
+
+                    Intent i = new Intent();
+                    i.setClass(activity, errorIntentTargetClass);
+                    i.putExtra("stack_trace_string",stackTraceString);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                    activity.startActivity(i);
+                    activity.finish();
+
+                    if (forceToQuit) {
+                        System.exit(0);
+                    }
+
+                }
+            }
+        });
+    }
+
+    public static void replaceErrorScreenActivityClass(Class errorScreenActivityClass){
+        errorIntentTargetClass = errorScreenActivityClass;
+    }
+
+    public static void setNativeExceptionHandler(NativeExceptionHandlerIfc nativeExceptionHandler) {
+        ReactNativeExceptionHandlerModule.nativeExceptionHandler = nativeExceptionHandler;
+    }
 }
