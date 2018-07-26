@@ -28,31 +28,35 @@ bool dismissApp = true;
 //variable to hold the custom error handler passed while customizing native handler
 void (^nativeErrorCallbackBlock)(NSException *exception, NSString *readeableException);
 
+// variable to hold the previously defined error handler
+NSUncaughtExceptionHandler* previousNativeErrorCallbackBlock;
+
+BOOL callPreviousNativeErrorCallbackBlock = false;
+
 //variable to hold the js error handler when setting up the error handler in RN.
 void (^jsErrorCallbackBlock)(NSException *exception, NSString *readeableException);
 
 //variable that holds the default native error handler
 void (^defaultNativeErrorCallbackBlock)(NSException *exception, NSString *readeableException) =
 ^(NSException *exception, NSString *readeableException){
-
+    
     UIAlertController* alert = [UIAlertController
                                 alertControllerWithTitle:@"Unexpected error occured"
                                 message:[NSString stringWithFormat:@"%@\n%@",
                                          @"Apologies..The app will close now \nPlease restart the app\n",
                                          readeableException]
                                 preferredStyle:UIAlertControllerStyleAlert];
-
+    
     UIApplication* app = [UIApplication sharedApplication];
     UIViewController * rootViewController = app.delegate.window.rootViewController;
     [rootViewController presentViewController:alert animated:YES completion:nil];
-
+    
     [NSTimer scheduledTimerWithTimeInterval:5.0
                                      target:[ReactNativeExceptionHandler class]
                                    selector:@selector(releaseExceptionHold)
                                    userInfo:nil
                                     repeats:NO];
 };
-
 
 // ====================================
 // REACT NATIVE MODULE EXPOSED METHODS
@@ -61,12 +65,15 @@ void (^defaultNativeErrorCallbackBlock)(NSException *exception, NSString *readea
 RCT_EXPORT_MODULE();
 
 // METHOD TO INITIALIZE THE EXCEPTION HANDLER AND SET THE JS CALLBACK BLOCK
-RCT_EXPORT_METHOD(setHandlerforNativeException:(RCTResponseSenderBlock)callback)
+RCT_EXPORT_METHOD(setHandlerforNativeException:(BOOL)callPreviouslyDefinedHandler withCallback: (RCTResponseSenderBlock)callback)
 {
     jsErrorCallbackBlock = ^(NSException *exception, NSString *readeableException){
         callback(@[readeableException]);
     };
-
+    
+    previousNativeErrorCallbackBlock = NSGetUncaughtExceptionHandler();
+    callPreviousNativeErrorCallbackBlock = callPreviouslyDefinedHandler;
+    
     NSSetUncaughtExceptionHandler(&HandleException);
     signal(SIGABRT, SignalHandler);
     signal(SIGILL, SignalHandler);
@@ -105,14 +112,19 @@ RCT_EXPORT_METHOD(setHandlerforNativeException:(RCTResponseSenderBlock)callback)
                                  [exception reason],
                                  [[exception userInfo] objectForKey:RNUncaughtExceptionHandlerAddressesKey]];
     dismissApp = false;
-
+    
+    
+    if (callPreviousNativeErrorCallbackBlock && previousNativeErrorCallbackBlock) {
+        previousNativeErrorCallbackBlock(exception);
+    }
+    
     if(nativeErrorCallbackBlock != nil){
         nativeErrorCallbackBlock(exception,readeableError);
     }else{
         defaultNativeErrorCallbackBlock(exception,readeableError);
     }
     jsErrorCallbackBlock(exception,readeableError);
-
+    
     CFRunLoopRef runLoop = CFRunLoopGetCurrent();
     CFArrayRef allModes = CFRunLoopCopyAllModes(runLoop);
     while (!dismissApp)
@@ -127,9 +139,9 @@ RCT_EXPORT_METHOD(setHandlerforNativeException:(RCTResponseSenderBlock)callback)
             i++;
         }
     }
-
+    
     CFRelease(allModes);
-
+    
     NSSetUncaughtExceptionHandler(NULL);
     signal(SIGABRT, SIG_DFL);
     signal(SIGILL, SIG_DFL);
@@ -137,9 +149,9 @@ RCT_EXPORT_METHOD(setHandlerforNativeException:(RCTResponseSenderBlock)callback)
     signal(SIGFPE, SIG_DFL);
     signal(SIGBUS, SIG_DFL);
     signal(SIGPIPE, SIG_DFL);
-
+    
     kill(getpid(), [[[exception userInfo] objectForKey:RNUncaughtExceptionHandlerSignalKey] intValue]);
-
+    
 }
 
 
@@ -154,14 +166,14 @@ void HandleException(NSException *exception)
     {
         return;
     }
-
+    
     NSArray *callStack = [ReactNativeExceptionHandler backtrace];
     NSMutableDictionary *userInfo =
     [NSMutableDictionary dictionaryWithDictionary:[exception userInfo]];
     [userInfo
      setObject:callStack
      forKey:RNUncaughtExceptionHandlerAddressesKey];
-
+    
     [[[ReactNativeExceptionHandler alloc] init]
      performSelectorOnMainThread:@selector(handleException:)
      withObject:
@@ -179,17 +191,17 @@ void SignalHandler(int signal)
     {
         return;
     }
-
+    
     NSMutableDictionary *userInfo =
     [NSMutableDictionary
      dictionaryWithObject:[NSNumber numberWithInt:signal]
      forKey:RNUncaughtExceptionHandlerSignalKey];
-
+    
     NSArray *callStack = [ReactNativeExceptionHandler backtrace];
     [userInfo
      setObject:callStack
      forKey:RNUncaughtExceptionHandlerAddressesKey];
-
+    
     [[[ReactNativeExceptionHandler alloc] init]
      performSelectorOnMainThread:@selector(handleException:)
      withObject:
@@ -216,7 +228,7 @@ void SignalHandler(int signal)
     void* callstack[128];
     int frames = backtrace(callstack, 128);
     char **strs = backtrace_symbols(callstack, frames);
-
+    
     int i;
     NSMutableArray *backtrace = [NSMutableArray arrayWithCapacity:frames];
     for (
@@ -228,8 +240,9 @@ void SignalHandler(int signal)
         [backtrace addObject:[NSString stringWithUTF8String:strs[i]]];
     }
     free(strs);
-
+    
     return backtrace;
 }
 
 @end
+
