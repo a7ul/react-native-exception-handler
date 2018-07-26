@@ -120,7 +120,7 @@ import {setJSExceptionHandler, getJSExceptionHandler} from 'react-native-excepti
 
 .
 .
-
+// For most use cases:
 // registering the error handler (maybe u can do this in the index.android.js or index.ios.js)
 setJSExceptionHandler((error, isFatal) => {
   // This is your custom global error handler
@@ -128,6 +128,16 @@ setJSExceptionHandler((error, isFatal) => {
   // or hit google analytics to track crashes
   // or hit a custom api to inform the dev team.
 });
+
+// ADVANCED use case:
+const exceptionhandler = (error, isFatal) => {
+  // your error handler function
+};
+setJSExceptionHandler(exceptionhandler, allowInDevMode);
+// - exceptionhandler is the exception handler function
+// - allowInDevMode is an optional parameter is a boolean.
+//   If set to true the handler to be called in place of RED screen
+//   in development mode also.
 
 // getJSExceptionHandler gives the currently set JS exception handler
 const currentHandler = getJSExceptionHandler();
@@ -138,6 +148,7 @@ To catch **Native_Exceptions**
 ```js
 import {setNativeExceptionHandler} from 'react-native-exception-handler';
 
+//For most use cases: 
 setNativeExceptionHandler((exceptionString) => {
   // This is your custom global error handler
   // You do stuff likehit google analytics to track crashes.
@@ -145,6 +156,16 @@ setNativeExceptionHandler((exceptionString) => {
   //NOTE: alert or showing any UI change via JS
   //WILL NOT WORK in case of NATIVE ERRORS.
 });
+
+// ADVANCED use case:
+const exceptionhandler = (exceptionString) => {
+  // your exception handler code here
+}
+setNativeExceptionHandler(exceptionhandler,forceAppQuit);
+// - exceptionhandler is the exception handler function
+// - forceAppQuit is an optional ANDROID specific parameter that defines
+//   if the app should be force quit on error.  default value is true. 
+//   To see usecase check the common issues section.
 
 ```
 It is recommended you set both the handlers.
