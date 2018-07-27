@@ -20,6 +20,11 @@ To tackle this we register a global error handler that could be used to for exam
 **V2 of this module now supports catching Unhandled Native Exceptions also along with the JS Exceptions ✌🏻🍻**
 There are **NO** breaking changes. So its safe to upgrade from v1 to v2. So there is no reason not to 😉.
 
+**V2.9**
+- Adds support for executing previously set error handlers (now this module can work with other analytics modules)
+- Adds an improved approach for overwriting native error handlers.
+- Thanks @ [Damien Solimando](https://github.com/dsolimando)
+
 **Example** repo can be found here: 
 *[https://github.com/master-atul/react-native-exception-handler-example](https://github.com/master-atul/react-native-exception-handler-example) *
 
@@ -128,7 +133,7 @@ setJSExceptionHandler((error, isFatal) => {
   // or hit google analytics to track crashes
   // or hit a custom api to inform the dev team.
 });
-
+//=================================================
 // ADVANCED use case:
 const exceptionhandler = (error, isFatal) => {
   // your error handler function
@@ -156,17 +161,21 @@ setNativeExceptionHandler((exceptionString) => {
   //NOTE: alert or showing any UI change via JS
   //WILL NOT WORK in case of NATIVE ERRORS.
 });
-
+//====================================================
 // ADVANCED use case:
 const exceptionhandler = (exceptionString) => {
   // your exception handler code here
 }
-setNativeExceptionHandler(exceptionhandler,forceAppQuit);
+setNativeExceptionHandler(exceptionhandler,forceAppQuit,executeDefaultHandler);
 // - exceptionhandler is the exception handler function
 // - forceAppQuit is an optional ANDROID specific parameter that defines
-//   if the app should be force quit on error.  default value is true. 
-//   To see usecase check the common issues section.
-
+//    if the app should be force quit on error.  default value is true. 
+//    To see usecase check the common issues section. 
+// - executeDefaultHandler is an optional boolean (both IOS, ANDROID)
+//    It executes previous exception handlers if set by some other module.
+//    It will come handy when you use any other crash analytics module along with this one
+//    Default value is set to false. Set to true if you are using other analytics modules.
+ 
 ```
 It is recommended you set both the handlers.
 
@@ -201,7 +210,39 @@ In Android and iOS you will see something like
   <img src="https://github.com/master-atul/react-native-exception-handler/raw/master/screens/ios_native_exception.png" width="300"/>
 </p>
 
-**Modifying Android Native Exception handler UI** (NATIVE CODE HAS TO BE WRITTEN) *recommended that you do this in android studio*
+**Modifying Android Native Exception handler (RECOMMENDED APPROACH)** 
+
+(NATIVE CODE HAS TO BE WRITTEN) *recommended that you do this in android studio*
+
+- In the `android/app/src/main/java/[...]/MainActivity.java`
+
+```java
+import com.masteratul.exceptionhandler.ReactNativeExceptionHandlerModule;
+import com.masteratul.exceptionhandler.NativeExceptionHandlerIfc
+...
+...
+...
+public class MainApplication extends Application implements ReactApplication {
+...
+...
+  @Override
+  public void onCreate() {
+    ....
+    ....
+    ....
+    ReactNativeExceptionHandlerModule.setNativeExceptionHandler(new NativeExceptionHandlerIfc() {
+      @Override
+      public void handleNativeException(Thread thread, Throwable throwable, Thread.UncaughtExceptionHandler originalHandler) {
+        // Put your error handling code here
+      }
+    }//This will override the default behaviour of displaying the recover activity.
+  }
+
+```
+
+**Modifying Android Native Exception handler UI (CUSTOM ACTIVITY APPROACH (OLD APPROACH).. LEAVING FOR BACKWARD COMPATIBILITY)** 
+
+(NATIVE CODE HAS TO BE WRITTEN) *recommended that you do this in android studio*
 
 - Create an Empty Activity in the `android/app/src/main/java/[...]/`. For example lets say CustomErrorDialog.java
 - Customize your activity to look and behave however you need it to be.
@@ -431,6 +472,10 @@ This is specifically occuring when you use [wix library](http://wix.github.io/re
 setNativeExceptionHandler(nativeErrorCallback, false);
 ```
 
+### Previously defined exception handlers are not executed anymore
+
+A lot of frameworks (especially analytics sdk's) implement global exception handlers. In order to keep these frameworks working while using react-native-exception-hanlder, you can pass a boolean value as third argument to `setNativeExceptionHandler(..., ..., true`) what will trigger the execution of the last global handler registered.
+
 
 ## CONTRIBUTORS
 - [Atul R](https://github.com/master-atul)
@@ -447,6 +492,7 @@ setNativeExceptionHandler(nativeErrorCallback, false);
 - [TomMahle](https://github.com/TomMahle)
 - [Sébastien Krafft](https://github.com/skrafft)
 - [Mark Friedman](https://github.com/mark-friedman)
+- [Damien Solimando](https://github.com/dsolimando)
 
 ## TESTING NATIVE EXCEPTIONS/ERRORS
 
