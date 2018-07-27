@@ -226,6 +226,34 @@ public class MainApplication extends Application implements ReactApplication {
 
 ```
 
+**Modifying Android Native Exception handler** (NATIVE CODE HAS TO BE WRITTEN) *recommended that you do this in android studio*
+
+- In the `android/app/src/main/java/[...]/MainActivity.java`
+
+```java
+import com.masteratul.exceptionhandler.ReactNativeExceptionHandlerModule;
+import com.masteratul.exceptionhandler.NativeExceptionHandlerIfc
+...
+...
+...
+public class MainApplication extends Application implements ReactApplication {
+...
+...
+  @Override
+  public void onCreate() {
+    ....
+    ....
+    ....
+    ReactNativeExceptionHandlerModule.setNativeExceptionHandler(new NativeExceptionHandlerIfc() {
+      @Override
+      public void handleNativeException(Thread thread, Throwable throwable, Thread.UncaughtExceptionHandler originalHandler) {
+        // Put your error handling code here
+      }
+    }//This will override the default behaviour of displaying the recover activity.
+  }
+
+```
+
 **Modifying iOS Native Exception handler UI** (NATIVE CODE HAS TO BE WRITTEN) *recommended that you do this in XCode*
 
 Unlike Android, in the case of iOS, there is no way to restart the app if it has crashed. Also, during a **Native_Exceptions** the UI becomes quite unstable since the exception occured on the main UI thread. Hence, none of the click or press handlers would work either.
@@ -431,6 +459,10 @@ This is specifically occuring when you use [wix library](http://wix.github.io/re
 setNativeExceptionHandler(nativeErrorCallback, false);
 ```
 
+### Previously defined exception handlers are not executed anymore
+
+A lot of frameworks (especially analytics sdk's) implement global exception handlers. In order to keep these frameworks working while using react-native-exception-hanlder, you can pass a boolean value as third argument to `setNativeExceptionHandler(..., ..., true`) what will trigger the execution of the last global handler registered.
+
 
 ## CONTRIBUTORS
 - [Atul R](https://github.com/master-atul)
@@ -447,6 +479,7 @@ setNativeExceptionHandler(nativeErrorCallback, false);
 - [TomMahle](https://github.com/TomMahle)
 - [Sébastien Krafft](https://github.com/skrafft)
 - [Mark Friedman](https://github.com/mark-friedman)
+- [Damien Solimando](https://github.com/dsolimando)
 
 ## TESTING NATIVE EXCEPTIONS/ERRORS
 
