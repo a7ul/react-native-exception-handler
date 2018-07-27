@@ -51,3 +51,6 @@ cache
 npm-debug.log
 coverage
 .DS_Store
+
+screens
+android/build
