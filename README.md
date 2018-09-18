@@ -178,6 +178,7 @@ setNativeExceptionHandler(exceptionhandler,forceAppQuit,executeDefaultHandler);
  
 ```
 It is recommended you set both the handlers.
+NOTE: `setNativeExceptionHandler` only works in bundled mode - it will show the red screen when applied to dev mode. 
 
 **See the examples to know more**                   
 
@@ -214,7 +215,7 @@ In Android and iOS you will see something like
 
 (NATIVE CODE HAS TO BE WRITTEN) *recommended that you do this in android studio*
 
-- In the `android/app/src/main/java/[...]/MainActivity.java`
+- In the `android/app/src/main/java/[...]/MainApplication.java`
 
 ```java
 import com.masteratul.exceptionhandler.ReactNativeExceptionHandlerModule;
@@ -235,7 +236,7 @@ public class MainApplication extends Application implements ReactApplication {
       public void handleNativeException(Thread thread, Throwable throwable, Thread.UncaughtExceptionHandler originalHandler) {
         // Put your error handling code here
       }
-    }//This will override the default behaviour of displaying the recover activity.
+    });//This will override the default behaviour of displaying the recover activity.
   }
 
 ```
