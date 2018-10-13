@@ -1,45 +1,45 @@
 {
-    "name": "react-native-exception-handler",
-    "version": "2.9.0",
-    "description": "A react native module that lets you to register a global error handler that can capture fatal/non fatal uncaught exceptions.",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo no tests && exit 1",
-        "lint": "eslint app/",
-        "lint:fix": "eslint app/ --fix"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/master-atul/react-native-exception-handler"
-    },
-    "keywords": [
-        "modal",
-        "react",
-        "native",
-        "exception",
-        "handler",
-        "red",
-        "screen",
-        "production",
-        "ios",
-        "android",
-        "bug",
-        "capture"
-    ],
-    "peerDependencies": {
-        "react": "*",
-        "react-native": "*"
-    },
-    "author": "master-atul",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/master-atul/react-native-exception-handler/issues"
-    },
-    "homepage": "https://github.com/master-atul/react-native-exception-handler",
-    "devDependencies": {
-        "babel-eslint": "^7.2.3",
-        "eslint": "^4.0.0",
-        "eslint-plugin-react": "^7.1.0",
-        "eslint-plugin-react-native": "^2.3.2"
-    }
+  "name": "react-native-exception-handler",
+  "version": "2.10.0",
+  "description": "A react native module that lets you to register a global error handler that can capture fatal/non fatal uncaught exceptions.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo no tests && exit 1",
+    "lint": "eslint app/",
+    "lint:fix": "eslint app/ --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/master-atul/react-native-exception-handler"
+  },
+  "keywords": [
+    "modal",
+    "react",
+    "native",
+    "exception",
+    "handler",
+    "red",
+    "screen",
+    "production",
+    "ios",
+    "android",
+    "bug",
+    "capture"
+  ],
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  },
+  "author": "master-atul",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/master-atul/react-native-exception-handler/issues"
+  },
+  "homepage": "https://github.com/master-atul/react-native-exception-handler",
+  "devDependencies": {
+    "babel-eslint": "^7.2.3",
+    "eslint": "^4.0.0",
+    "eslint-plugin-react": "^7.1.0",
+    "eslint-plugin-react-native": "^2.3.2"
+  }
 }
