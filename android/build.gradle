@@ -11,13 +11,24 @@ buildscript {
 
 apply plugin: 'com.android.library'
 
+
+
+def getExtValue(rootProject,key,defaultValue ) {
+    if (rootProject.hasProperty('ext')) {
+        if (rootProject.ext.has(key)) {
+            return rootProject.ext[key]
+        }
+    }
+    return defaultValue
+}
+
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
+    compileSdkVersion getExtValue(rootProject,'compileSdkVersion',23)
+    buildToolsVersion getExtValue(rootProject,'buildToolsVersion', "23.0.1")
 
     defaultConfig {
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        minSdkVersion getExtValue(rootProject,'minSdkVersion', 16)
+        targetSdkVersion getExtValue(rootProject,'targetSdkVersion', 22)
         versionCode 1
         versionName "1.0"
     }
