@@ -184,7 +184,7 @@ setNativeExceptionHandler(
 ```
 
 It is recommended you set both the handlers.
-NOTE: `setNativeExceptionHandler` only works in bundled mode - it will show the red screen when applied to dev mode.
+**NOTE: `setNativeExceptionHandler` only works in bundled mode - it will show the red screen when applied to dev mode.**
 
 **See the examples to know more**
 
