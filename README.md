@@ -500,6 +500,7 @@ A lot of frameworks (especially analytics sdk's) implement global exception hand
 - [Mark Friedman](https://github.com/mark-friedman)
 - [Damien Solimando](https://github.com/dsolimando)
 - [Jens Kuhr Jørgensen](https://github.com/jenskuhrjorgensen)
+- [Szabó Zsolt](https://github.com/alexovits)
 
 ## TESTING NATIVE EXCEPTIONS/ERRORS
 
