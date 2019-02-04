@@ -83,7 +83,7 @@ or
 
 ##### Using Cocoapods
 
-1. add `pod 'ReactNativeExceptionHandler', :podspec => '../node_modules/react-native-exception-handler/ios/ReactNativeExceptionHandler.podspec'` to your Podfile
+1. add `pod 'ReactNativeExceptionHandler', :podspec => '../node_modules/react-native-exception-handler/ReactNativeExceptionHandler.podspec'` to your Podfile
 2. run `pod install`
 
 #### Android
