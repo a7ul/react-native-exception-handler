@@ -8,8 +8,6 @@ end
 
 # Let the main package.json decide the version number for the pod
 package_version = pkg_version.call
-# Use the same RN version that the JS tools use
-react_native_version = pkg_version.call('../react-native')
 
 Pod::Spec.new do |s|
   s.name         = "ReactNativeExceptionHandler"
@@ -26,6 +24,6 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/master-atul/react-native-exception-handler.git", :tag => s.version.to_s }
   s.source_files  = "ios/*.{h,m}"
 
-  s.dependency "React", react_native_version
+  s.dependency "React"
 
 end
