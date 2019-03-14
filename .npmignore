@@ -54,3 +54,6 @@ coverage
 
 screens
 android/build
+examples
+README.md
+.eslintrc
