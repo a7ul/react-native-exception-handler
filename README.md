@@ -502,6 +502,7 @@ A lot of frameworks (especially analytics sdk's) implement global exception hand
 - [Jens Kuhr Jørgensen](https://github.com/jenskuhrjorgensen)
 - [Szabó Zsolt](https://github.com/alexovits)
 - [Andrew Vyazovoy](https://github.com/Vyazovoy)
+- [Pierre Segalen](https://github.com/psegalen)
 
 ## TESTING NATIVE EXCEPTIONS/ERRORS
 
