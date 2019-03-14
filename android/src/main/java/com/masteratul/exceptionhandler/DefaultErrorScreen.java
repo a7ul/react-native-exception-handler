@@ -22,7 +22,13 @@ public class DefaultErrorScreen extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String stackTraceString = getIntent().getExtras().getString("stack_trace_string");
+        String stackTraceString = "StackTrace unavailable";
+        try {
+            stackTraceString = getIntent().getExtras().getString("stack_trace_string");
+        }
+        catch (Exception e) {
+            Log.e(TAG, String.format("Was not able to get StackTrace: %s", e.getMessage()));
+        }
         setContentView(R.layout.default_error_screen);
         quitButton = (Button) findViewById(R.id.eh_quit_button);
         relaunchButton = (Button) findViewById(R.id.eh_restart_button);
