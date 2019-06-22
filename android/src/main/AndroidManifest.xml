@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.masteratul.exceptionhandler">
 
-    <application>
+    <application android:usesCleartextTraffic="true">
         <activity android:name=".DefaultErrorScreen">
         </activity>
     </application>
