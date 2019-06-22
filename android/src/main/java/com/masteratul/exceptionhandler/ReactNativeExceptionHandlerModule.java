@@ -93,11 +93,11 @@ public class ReactNativeExceptionHandlerModule extends ReactContextBaseJavaModul
             .enqueue(new okhttp3.Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-                    Log.e("sendException",e)
+                    Log.e("sendException",e);
                 }
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-                    Log.e("sendException","success")
+                    Log.e("sendException","success");
                 }
             });
     }
