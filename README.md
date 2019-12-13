@@ -116,7 +116,7 @@ Unhandled exceptions leave the app in a critical state.
 In case of **JS_Exceptions** you can catch these unhandled exceptions and perform tasks like show alerts or popups, do cleanup or even hit an API to inform the dev teams before closing the app.
 
 In case of **Native_Exceptions** it becomes much worse. While you can catch these unhandled exceptions and perform tasks like cleanup or logout or even hit an API to inform the dev teams before closing the app,
-you CANNOT show a JS alert box or do any UI stuff via JS code. This has to be done via the native methods provided by this module in the repective NATIVE codebase for iOS and android. The module does provide default handlers though :P. So you will get default popups incase of errors. Obviously you can customise them. See CUSTOMIZATION section.
+you CANNOT show a JS alert box or do any UI stuff via JS code. This has to be done via the native methods provided by this module in the respective NATIVE codebase for iOS and android. The module does provide default handlers though :P. So you will get default popups incase of errors. Obviously you can customise them. See CUSTOMIZATION section.
 
 ### Usage
 
