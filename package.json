@@ -1,6 +1,6 @@
 {
   "name": "react-native-exception-handler",
-  "version": "2.10.8",
+  "version": "2.10.9",
   "description": "A react native module that lets you to register a global error handler that can capture fatal/non fatal uncaught exceptions.",
   "main": "index.js",
   "typings": "index.d.ts",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/master-atul/react-native-exception-handler"
+    "url": "git+https://github.com/a7ul/react-native-exception-handler"
   },
   "keywords": [
     "modal",
@@ -31,12 +31,12 @@
     "react": "*",
     "react-native": "*"
   },
-  "author": "master-atul",
+  "author": "a7ul",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/master-atul/react-native-exception-handler/issues"
+    "url": "https://github.com/a7ul/react-native-exception-handler/issues"
   },
-  "homepage": "https://github.com/master-atul/react-native-exception-handler",
+  "homepage": "https://github.com/a7ul/react-native-exception-handler",
   "devDependencies": {
     "babel-eslint": "^7.2.3",
     "eslint": "^4.0.0",
