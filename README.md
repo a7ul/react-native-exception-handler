@@ -72,6 +72,11 @@ or
 
 `react-native link react-native-exception-handler`
 
+### For react-native@0.60.0 or above
+
+As [react-native@0.60.0](https://reactnative.dev/blog/2019/07/03/version-60) or above supports autolinking, so there is no need to run linking process.
+Read more about autolinking [here](https://github.com/react-native-picker/cli/blob/master/docs/autolinking.md).
+
 ### Manual installation
 
 #### iOS
@@ -156,7 +161,7 @@ To catch **Native_Exceptions**
 import { setNativeExceptionHandler } from "react-native-exception-handler";
 
 //For most use cases:
-setNativeExceptionHandler(exceptionString => {
+setNativeExceptionHandler((exceptionString) => {
   // This is your custom global error handler
   // You do stuff likehit google analytics to track crashes.
   // or hit a custom api to inform the dev team.
@@ -165,7 +170,7 @@ setNativeExceptionHandler(exceptionString => {
 });
 //====================================================
 // ADVANCED use case:
-const exceptionhandler = exceptionString => {
+const exceptionhandler = (exceptionString) => {
   // your exception handler code here
 };
 setNativeExceptionHandler(
@@ -416,7 +421,7 @@ import { Alert } from "react-native";
 import { BackAndroid } from "react-native";
 import { setJSExceptionHandler } from "react-native-exception-handler";
 
-const reporter = error => {
+const reporter = (error) => {
   // Logic for reporting to devs
   // Example : Log issues to github issues using github apis.
   console.log(error); // sample
@@ -437,8 +442,8 @@ const errorHandler = (e, isFatal) => {
           text: "Close",
           onPress: () => {
             BackAndroid.exitApp();
-          }
-        }
+          },
+        },
       ]
     );
   } else {
@@ -448,7 +453,7 @@ const errorHandler = (e, isFatal) => {
 
 setJSExceptionHandler(errorHandler);
 
-setNativeExceptionHandler(errorString => {
+setNativeExceptionHandler((errorString) => {
   //You can do something like call an api to report to dev team here
   //example
   // fetch('http://<YOUR API TO REPORT TO DEV TEAM>?error='+errorString);
