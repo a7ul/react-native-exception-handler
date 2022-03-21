@@ -1,5 +1,5 @@
 {
-  "name": "react-native-exception-handler",
+  "name": "crashy",
   "version": "2.10.10",
   "description": "A react native module that lets you to register a global error handler that can capture fatal/non fatal uncaught exceptions.",
   "main": "index.js",
