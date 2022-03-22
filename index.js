@@ -1,5 +1,8 @@
 import {Alert} from 'react-native';
-import {setJSExceptionHandler, setNativeExceptionHandler} from './src/error-handler';
+import {
+  setJSExceptionHandler,
+  setNativeExceptionHandler,
+} from './src/error-handler';
 import {sendLog} from './src/send-error';
 
 let apiUrl;
@@ -23,8 +26,8 @@ const errorHandler = (e, isFatal) => {
 };
 
 export default {
-  init (url) {
-    apiUrl = url;
+  init ({apiLogUrl}) {
+    apiUrl = apiLogUrl;
     console.log('init exception handler ...');
     setNativeExceptionHandler(() => {}, false);
     setJSExceptionHandler(errorHandler, true);
