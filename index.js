@@ -6,12 +6,14 @@ import {
 import {sendLog} from './src/send-error';
 
 let apiUrl;
+let errTitle;
+let errMsg;
 
 const errorHandler = (e, isFatal) => {
   let errString = JSON.stringify(e, Object.getOwnPropertyNames(e));
   // alert message
   if (isFatal) {
-    Alert.alert('ERROR TITLE', errString, [
+    Alert.alert(errTitle, errMsg ? errMsg :  errString, [
       {
         text: 'Cancel',
         onPress: () => console.log('Cancel Pressed'),
@@ -26,8 +28,10 @@ const errorHandler = (e, isFatal) => {
 };
 
 export default {
-  init ({apiLogUrl}) {
+  init ({apiLogUrl = '', errorTitle = '', errorMessage = ''}) {
     apiUrl = apiLogUrl;
+    errMsg = errorMessage;
+    errTitle = errorTitle;
     console.log('init exception handler ...');
     setNativeExceptionHandler(() => {}, false);
     setJSExceptionHandler(errorHandler, true);
