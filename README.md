@@ -11,7 +11,7 @@ Battery-included with automatic error logging, just provide your api server url
 In your app.js or application root,
 ```
 import Crashy from "crashy"
-Crashy.init({apiLogUrl = "your-api-server", errorTitle = "", errorMessage = "");
+Crashy.init({apiLogUrl : "your-api-server", errorTitle : "", errorMessage : "");
 ```
 
 
