@@ -8,9 +8,8 @@ Battery-included with automatic error logging, just provide your api server url
 
 ``` npm i git@github.com:kukuandroid/crashy.git --save ```
 
-``` import Crashy from "crashy" 
-Crashy.init("https://sit-maya.maybank.com.my/v1/logs")
-```
+``` import Crashy from "crashy" ```
+``` Crashy.init("https://sit-maya.maybank.com.my/v1/logs") ```
 
 
 # For react-native@0.60.0 or above
