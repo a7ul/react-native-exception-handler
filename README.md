@@ -24,6 +24,8 @@ As react-native@0.60.0 or above supports autolinking, so there is no need to run
 Property | Type | Default | Desc
 --- | --- | --- | ---
 apiLogUrl *(required)* | `String` | null | Log Error Server Url
+errorTitle  | `String` | default | Alert message title
+errorMessage | `String` | default | Alert message body
 
 
 ## Maybank : Engineering Team
