@@ -6,7 +6,7 @@ Battery-included with automatic error logging, just provide your api server url
 
 ## Usage
 
-``` npm i git@github.com:kukuandroid/crashy.git --save ```
+``` npm i git@github.com:kukuandroid/crashy.git#stable --save ```
 
 In your app.js or application root,
 ```
