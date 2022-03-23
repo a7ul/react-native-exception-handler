@@ -9,18 +9,24 @@ let apiUrl;
 let errTitle;
 let errMsg;
 
+const defaultTitle = 'Ops,something went wrong';
 const errorHandler = (e, isFatal) => {
   let errString = JSON.stringify(e, Object.getOwnPropertyNames(e));
+  // later, can pass custom component instead of alert
   // alert message
   if (isFatal) {
-    Alert.alert(errTitle, errMsg ? errMsg :  errString, [
-      {
-        text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
-        style: 'cancel',
-      },
-      {text: 'OK', onPress: () => console.log('OK Pressed')},
-    ]);
+    Alert.alert(
+      errTitle ? errTitle : defaultTitle,
+      errMsg ? errMsg : errString,
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ]
+    );
     sendLog(apiUrl, errString);
   } else {
     console.log(e); // So that we can see it in the ADB logs in case of Android if needed
