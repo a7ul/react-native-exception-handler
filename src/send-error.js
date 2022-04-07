@@ -1,3 +1,4 @@
+
 export const sendLog = async (url, error) => {
   try {
     const rawResponse = await fetch(url, {
@@ -18,4 +19,3 @@ export const sendLog = async (url, error) => {
     throw new Error(error);
   }
 };
-  
