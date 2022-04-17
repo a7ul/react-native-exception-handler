@@ -6,7 +6,7 @@ import {
   setNativeExceptionHandler,
 } from './src/error-handler';
 import {defaultTitle} from 'crashy/src/config';
-import {sendLog} from '../../api/send-error';
+import {sendLog} from 'crashy/src/send-error';
 
 const Crashy = ({children, options}) => {
 
@@ -15,7 +15,7 @@ const Crashy = ({children, options}) => {
   }, []);
 
   const errorHandler = (e, isFatal) => {
-    const {errorTitle, errorMessage} =  options;
+    const {errorTitle, errorMessage, customerId} =  options;
     let errString = JSON.stringify(e, Object.getOwnPropertyNames(e));
     // later, can pass custom component instead of alert
     // alert message
@@ -32,7 +32,7 @@ const Crashy = ({children, options}) => {
           {text: 'OK', onPress: () => console.log('OK Pressed')},
         ]
       );
-      sendLog(options.apiUrl, errString);
+      sendLog(options.apiUrl, errString, customerId);
 
     } else {
       console.log(e); // So that we can see it in the ADB logs in case of Android if needed
