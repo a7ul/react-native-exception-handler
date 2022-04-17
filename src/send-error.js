@@ -1,5 +1,10 @@
 
-export const sendLog = async (url, error) => {
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// should listen to netinfo, but its not working
+const isOnline = true;
+
+const sendToAPI =  async (url, error) => {
   try {
     const rawResponse = await fetch(url, {
       method: 'POST',
@@ -15,7 +20,22 @@ export const sendLog = async (url, error) => {
     console.log('====================================');
     return content;
   } catch (error) {
-    alert(error);
     throw new Error(error);
   }
 };
+
+const saveToLocalStorage = async (error) => {
+  var existing = AsyncStorage.getItem('@error_logs');
+  existing = existing ? existing.split(',') : [];
+  existing.push(error);
+  await AsyncStorage.setItem('@error_logs', existing.toString());
+};
+
+export const sendLog = async (url, error) => {
+  if (isOnline) {
+    sendToAPI(url, error);
+  } else {
+    saveToLocalStorage();
+  }
+};
+
