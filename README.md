@@ -15,7 +15,11 @@ Crashy.init({apiLogUrl : "your-api-server", errorTitle : "", errorMessage : "");
 ```
 
 ##  Prerequisite
-1) Install https://github.com/react-native-device-info/react-native-device-info
+Crashy has dependencies to libraries as below, make sure to install it :
+1)  https://github.com/react-native-device-info/react-native-device-info
+2)  https://react-native-async-storage.github.io/async-storage/docs/install
+3)  https://github.com/react-native-netinfo/react-native-netinfo
+
 
 ## For react-native@0.60.0 or above
 
