@@ -11,14 +11,26 @@ Battery-included with automatic error logging, just provide your api server url
 In your app.js or application root,
 ```
 import Crashy from "crashy"
-Crashy.init({apiLogUrl : "your-api-server", errorTitle : "", errorMessage : "");
+
+const options = {
+    apiUrl: "https://sit-maya.maybank.com.my/v1/logs",
+    errorTitle: "Error Title",
+    customerId : "88a123x-12asdwx-19kks92a"
+};
+  
+ <Crashy options={options}>
+ {YourApplicationCode}
+ </Crashy>
 ```
 
-##  Prerequisite
+##  Peer-dependencies
 Crashy has dependencies to libraries as below, make sure to install it :
-1)  https://github.com/react-native-device-info/react-native-device-info
-2)  https://react-native-async-storage.github.io/async-storage/docs/install
-3)  https://github.com/react-native-netinfo/react-native-netinfo
+
+| No | Library | Link |
+| :---:   | :-: | :-: |
+| 1 | React Native Device Info | https://github.com/react-native-device-info/react-native-device-info |
+| 2 | Async Storage | https://react-native-async-storage.github.io/async-storage/docs/install |
+| 3 | React Native NetInfo |  https://github.com/react-native-netinfo/react-native-netinfo |
 
 
 ## For react-native@0.60.0 or above
