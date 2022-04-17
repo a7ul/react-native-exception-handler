@@ -1,45 +1,54 @@
-import {Alert} from 'react-native';
+import React, {useEffect} from 'react';
+
+import {Alert, View} from 'react-native';
 import {
   setJSExceptionHandler,
   setNativeExceptionHandler,
 } from './src/error-handler';
-import {sendLog} from './src/send-error';
+import {defaultTitle} from 'crashy/src/config';
+import {sendLog} from '../../api/send-error';
 
-let apiUrl;
-let errTitle;
-let errMsg;
+const Crashy = ({children, options}) => {
 
-const defaultTitle = 'Ops,something went wrong';
-const errorHandler = (e, isFatal) => {
-  let errString = JSON.stringify(e, Object.getOwnPropertyNames(e));
-  // later, can pass custom component instead of alert
-  // alert message
-  if (isFatal) {
-    Alert.alert(
-      errTitle ? errTitle : defaultTitle,
-      errMsg ? errMsg : errString,
-      [
-        {
-          text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
-        },
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
-      ]
-    );
-    sendLog(apiUrl, errString);
-  } else {
-    console.log(e); // So that we can see it in the ADB logs in case of Android if needed
-  }
-};
+  useEffect(() => {
+    initCrashy();
+  }, []);
 
-export default {
-  init ({apiLogUrl = '', errorTitle = '', errorMessage = ''}) {
-    apiUrl = apiLogUrl;
-    errMsg = errorMessage;
-    errTitle = errorTitle;
-    console.log('init exception handler ...');
+  const errorHandler = (e, isFatal) => {
+    const {errorTitle, errorMessage} =  options;
+    let errString = JSON.stringify(e, Object.getOwnPropertyNames(e));
+    // later, can pass custom component instead of alert
+    // alert message
+    if (isFatal) {
+      Alert.alert(
+        errorTitle ? errorTitle : defaultTitle,
+        errorMessage ? errorMessage : errString,
+        [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ]
+      );
+      sendLog(options.apiUrl, errString);
+
+    } else {
+      console.log(e); // So that we can see it in the ADB logs in case of Android if needed
+    }
+  };
+
+  const initCrashy = () => {
     setNativeExceptionHandler(() => {}, false);
     setJSExceptionHandler(errorHandler, true);
-  },
+  };
+  return (
+    <View>
+      {children}
+    </View>
+  );
 };
+
+export default Crashy;
+   
