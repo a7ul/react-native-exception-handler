@@ -38,7 +38,7 @@ Crashy has dependencies to libraries as below, make sure to install it :
 As react-native@0.60.0 or above supports autolinking, so there is no need to run linking process. Read more about autolinking here.
 
 
-## Options Properties
+## Option Properties
 Property | Type | Default | Desc
 --- | --- | --- | ---
 apiLogUrl *(required)* | `String` | null | Log Error Server Url
