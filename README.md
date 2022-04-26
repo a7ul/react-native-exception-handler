@@ -30,7 +30,6 @@ Crashy has dependencies to libraries as below, make sure to install it :
 | :---:   | :-: | :-: |
 | 1 | React Native Device Info | https://github.com/react-native-device-info/react-native-device-info |
 | 2 | Async Storage | https://react-native-async-storage.github.io/async-storage/docs/install |
-| 3 | React Native NetInfo |  https://github.com/react-native-netinfo/react-native-netinfo |
 
 
 ## For react-native@0.60.0 or above
