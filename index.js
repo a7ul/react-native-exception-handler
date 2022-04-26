@@ -7,7 +7,8 @@ import {
 } from './src/error-handler';
 import {defaultTitle} from 'crashy/src/config';
 import {sendLog} from 'crashy/src/send-error';
-import {checkIfItemExist} from './src/utils/shared';
+import {checkIfItemExist} from 'crashy/src/utils/shared';
+import {clear} from 'crashy/src/utils/local-storage';
 
 const Crashy = ({children, options}) => {
   const {errorTitle, errorMessage, customerId} = options;
@@ -39,18 +40,21 @@ const Crashy = ({children, options}) => {
     }
   };
 
-
   const checkLocalData = async () => {
     let data =  await checkIfItemExist('@error_logs');
     if (data) {
-      sendLog(options.apiUrl, data, customerId);
+      await sendLog(options.apiUrl, JSON.parse(data), customerId);
+      clear();
+
     }
   };
 
   const initCrashy = () => {
+    // clear();
     setNativeExceptionHandler(() => {}, false);
     setJSExceptionHandler(errorHandler, true);
     checkLocalData();
+    
   };
   return <View>{children}</View>;
 };

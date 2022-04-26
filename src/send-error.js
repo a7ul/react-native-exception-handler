@@ -1,6 +1,6 @@
 
 import {getDeviceInfo} from 'crashy/src/DeviceInfo';
-import {getItem, setItem} from './utils/local-storage';
+import {getItem, setItem} from 'crashy/src/utils/local-storage';
 
 let customerId;
 let deviceInfo;
@@ -25,24 +25,31 @@ const sendToAPI =  async (url, error) => {
     console.log('error sent', content);
     console.log('====================================');
     return content;
-  } catch (error) {
+  } catch (err) {
     saveToLocalStorage(error);
-    throw new Error(error);
+    throw error;
   }
 };
 
 
 const saveToLocalStorage = async (error) => {
   var existing =  await getItem('@error_logs');
-  existing = existing ? existing.split(',') : [];
-  console.log('existing', existing);
-  existing.push({error, deviceInfo});
-  await setItem('@error_logs', existing.toString());
+  existing = existing ? JSON.parse(existing) : [];
+  console.log('existing ->', existing);
+  if (error) {
+    existing.push({error, deviceInfo});
+    await setItem('@error_logs', JSON.stringify(existing));
+  }
 };
 
 export const sendLog = async (url, error, customerID) => {
+  console.log('error ->', error);
   customerId = customerID;
   deviceInfo =  await getDeviceInfo();
-  sendToAPI(url, error);
+  try {
+    await sendToAPI(url, error);
+  } catch (err) {
+    console.log(err);
+  }
 };
 
