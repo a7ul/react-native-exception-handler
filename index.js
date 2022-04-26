@@ -7,15 +7,16 @@ import {
 } from './src/error-handler';
 import {defaultTitle} from 'crashy/src/config';
 import {sendLog} from 'crashy/src/send-error';
+import {checkIfItemExist} from './src/utils/shared';
 
 const Crashy = ({children, options}) => {
+  const {errorTitle, errorMessage, customerId} = options;
 
   useEffect(() => {
     initCrashy();
   }, []);
 
   const errorHandler = (e, isFatal) => {
-    const {errorTitle, errorMessage, customerId} =  options;
     let errString = JSON.stringify(e, Object.getOwnPropertyNames(e));
     // later, can pass custom component instead of alert
     // alert message
@@ -33,22 +34,25 @@ const Crashy = ({children, options}) => {
         ]
       );
       sendLog(options.apiUrl, errString, customerId);
-
     } else {
       console.log(e); // So that we can see it in the ADB logs in case of Android if needed
+    }
+  };
+
+
+  const checkLocalData = async () => {
+    let data =  await checkIfItemExist('@error_logs');
+    if (data) {
+      sendLog(options.apiUrl, data, customerId);
     }
   };
 
   const initCrashy = () => {
     setNativeExceptionHandler(() => {}, false);
     setJSExceptionHandler(errorHandler, true);
+    checkLocalData();
   };
-  return (
-    <View>
-      {children}
-    </View>
-  );
+  return <View>{children}</View>;
 };
 
 export default Crashy;
-   

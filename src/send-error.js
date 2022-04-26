@@ -1,10 +1,7 @@
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getDeviceInfo} from 'crashy/src/DeviceInfo';
+import {getItem, setItem} from './utils/local-storage';
 
-
-// should listen to netinfo, but its not working
-const isOnline = false;
 let customerId;
 let deviceInfo;
 
@@ -15,7 +12,6 @@ const sendToAPI =  async (url, error) => {
       deviceInfo,
       customerId
     };
-    console.log('body', body);
     const rawResponse = await fetch(url, {
       method: 'POST',
       headers: {
@@ -30,25 +26,23 @@ const sendToAPI =  async (url, error) => {
     console.log('====================================');
     return content;
   } catch (error) {
+    saveToLocalStorage(error);
     throw new Error(error);
   }
 };
 
+
 const saveToLocalStorage = async (error) => {
-  var existing = await AsyncStorage.getItem('@error_logs');
+  var existing =  await getItem('@error_logs');
   existing = existing ? existing.split(',') : [];
   console.log('existing', existing);
   existing.push({error, deviceInfo});
-  await AsyncStorage.setItem('@error_logs', existing.toString());
+  await setItem('@error_logs', existing.toString());
 };
 
 export const sendLog = async (url, error, customerID) => {
   customerId = customerID;
   deviceInfo =  await getDeviceInfo();
-  if (isOnline) {
-    sendToAPI(url, error);
-  } else {
-    saveToLocalStorage(error);
-  }
+  sendToAPI(url, error);
 };
 
