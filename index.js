@@ -34,7 +34,7 @@ const Crashy = ({children, options}) => {
           {text: 'OK', onPress: () => console.log('OK Pressed')},
         ]
       );
-      sendLog(options.apiUrl, errString, customerId);
+      sendLog(options.apiUrl, errString, customerId, options.deviceInfo);
     } else {
       console.log(e); // So that we can see it in the ADB logs in case of Android if needed
     }
@@ -43,7 +43,7 @@ const Crashy = ({children, options}) => {
   const checkLocalData = async () => {
     let data =  await checkIfItemExist('@error_logs');
     if (data) {
-      await sendLog(options.apiUrl, JSON.parse(data), customerId);
+      await sendLog(options.apiUrl, JSON.parse(data), customerId, options.deviceInfo);
       clear();
 
     }

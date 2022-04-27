@@ -1,5 +1,4 @@
 
-import {getDeviceInfo} from 'crashy/src/DeviceInfo';
 import {getItem, setItem} from 'crashy/src/utils/local-storage';
 
 let customerId;
@@ -42,10 +41,10 @@ const saveToLocalStorage = async (error) => {
   }
 };
 
-export const sendLog = async (url, error, customerID) => {
+export const sendLog = async (url, error, customerID, dvcInfo) => {
   console.log('error ->', error);
   customerId = customerID;
-  deviceInfo =  await getDeviceInfo();
+  deviceInfo =  dvcInfo;
   try {
     await sendToAPI(url, error);
   } catch (err) {
