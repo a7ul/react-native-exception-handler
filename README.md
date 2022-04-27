@@ -11,7 +11,7 @@ In your app.js or application root,
 import Crashy from "crashy"
 
 const options = {
-    apiUrl: "https://sit-maya.maybank.com.my/v1/logs",
+    apiUrl: "your api url",
     errorTitle: "Error Title",
     customerId : "88a123x-12asdwx-19kks92a"
 };
