@@ -1,5 +1,5 @@
+import {getItem, setItem} from './utils/local-storage';
 
-import {getItem, setItem} from 'crashy/src/utils/local-storage';
 
 let customerId;
 let deviceInfo;

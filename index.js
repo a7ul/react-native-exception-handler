@@ -5,13 +5,13 @@ import {
   setJSExceptionHandler,
   setNativeExceptionHandler,
 } from './src/error-handler';
-import {defaultTitle} from 'crashy/src/config';
-import {sendLog} from 'crashy/src/send-error';
-import {checkIfItemExist} from 'crashy/src/utils/shared';
-import {clear} from 'crashy/src/utils/local-storage';
+import {defaultTitle} from './src/config';
+import {sendLog} from './src/send-error';
+import {checkIfItemExist} from './src/utils/shared';
+import {clear} from './src/utils/local-storage';
 
 const Crashy = ({children, options}) => {
-  const {errorTitle, errorMessage, customerId} = options;
+  const {errorTitle, apiUrl, errorMessage, customerId, deviceInfo} = options;
 
   useEffect(() => {
     initCrashy();
@@ -34,7 +34,7 @@ const Crashy = ({children, options}) => {
           {text: 'OK', onPress: () => console.log('OK Pressed')},
         ]
       );
-      sendLog(options.apiUrl, errString, customerId, options.deviceInfo);
+      sendLog(apiUrl, errString, customerId, deviceInfo);
     } else {
       console.log(e); // So that we can see it in the ADB logs in case of Android if needed
     }
@@ -43,7 +43,7 @@ const Crashy = ({children, options}) => {
   const checkLocalData = async () => {
     let data =  await checkIfItemExist('@error_logs');
     if (data) {
-      await sendLog(options.apiUrl, JSON.parse(data), customerId, options.deviceInfo);
+      await sendLog(apiUrl, JSON.parse(data), customerId, deviceInfo);
       clear();
 
     }

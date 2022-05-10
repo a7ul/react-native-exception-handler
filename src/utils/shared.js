@@ -1,4 +1,4 @@
-import {getItem} from 'crashy/src/utils/local-storage';
+import {getItem} from './local-storage';
 
 
 export const checkIfItemExist  = async (key) => {
@@ -8,3 +8,4 @@ export const checkIfItemExist  = async (key) => {
   }
   return null;
 };
+
