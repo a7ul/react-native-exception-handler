@@ -14,4 +14,10 @@
 //   executeDefaultHandler?: boolean
 // ) => void;
 
-declare const init: (logApiUrl: string) => void;
+declare const init: (
+    apiLogUrl: string,
+    errorTitle: string,
+    errorMessage: string,
+    customerId: string,
+  ) => void;
+  
