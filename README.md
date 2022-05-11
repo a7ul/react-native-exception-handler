@@ -11,7 +11,7 @@ In your app.js or application root,
 import Crashy from "crashy"
 
 const options = {
-    apiUrl: "https://sit-maya.maybank.com.my/v1/logs",
+    apiUrl: "your api url",
     errorTitle: "Error Title",
     customerId : "88a123x-12asdwx-19kks92a"
 };
@@ -26,8 +26,7 @@ Crashy has dependencies to libraries as below, make sure to install it :
 
 | No | Library | Link |
 | :---:   | :-: | :-: |
-| 1 | React Native Device Info | https://github.com/react-native-device-info/react-native-device-info |
-| 2 | Async Storage | https://react-native-async-storage.github.io/async-storage/docs/install |
+| 1 | Async Storage | https://react-native-async-storage.github.io/async-storage/docs/install |
 
 
 ## For react-native@0.60.0 or above
