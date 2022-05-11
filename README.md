@@ -4,21 +4,19 @@ Battery-included with automatic error logging, just provide your api server url
 
 ## Usage
 
-``` npm i git@github.com:kukuandroid/crashy.git#stable --save ```
+``` npm install https://github.com/kukuandroid/crashy.git#stable --save ```
 
 In your app.js or application root,
 ```
 import Crashy from "crashy"
 
-const options = {
-    apiUrl: "your api url",
-    errorTitle: "Error Title",
-    customerId : "88a123x-12asdwx-19kks92a"
-};
-  
- <Crashy options={options}>
- {YourApplicationCode}
- </Crashy>
+   Crashy.init({
+            apiUrl: "your-api-url",
+            deviceInfo: { // any device details },
+            errorTitle: "Error Title",
+            customerId: "your-customer-id",
+            errorMessage: "",
+        });
 ```
 
 ##  Peer-dependencies
@@ -40,6 +38,7 @@ Property | Type | Default | Desc
 apiLogUrl *(required)* | `String` | null | Log Error Server Url
 errorTitle  | `String` | default | Alert message title
 errorMessage | `String` | default | Alert message body
+deviceInfo | `Object` |  
 
 
 ## Maybank : Engineering Team
