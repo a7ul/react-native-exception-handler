@@ -1,15 +1,11 @@
 import {getItem, setItem} from './utils/local-storage';
 
-
-let customerId;
-let deviceInfo;
-
-const sendToAPI =  async (url, error) => {
+const sendToAPI =  async (url, error, custInfo, deviceInfo) => {
   try {
     let body = {
       message: error,
       deviceInfo,
-      customerId
+      custInfo 
     };
     const rawResponse = await fetch(url, {
       method: 'POST',
@@ -20,33 +16,30 @@ const sendToAPI =  async (url, error) => {
       body: JSON.stringify(body),
     });
     const content = await rawResponse.json();
-    console.log('====================================');
+    console.log(JSON.stringify(body));
     console.log('error sent', content);
     console.log('====================================');
     return content;
   } catch (err) {
-    saveToLocalStorage(error);
+    saveToLocalStorage(error, deviceInfo, custInfo);
     throw error;
   }
 };
 
 
-const saveToLocalStorage = async (error) => {
+const saveToLocalStorage = async (error, deviceInfo, custInfo) => {
   var existing =  await getItem('@error_logs');
   existing = existing ? JSON.parse(existing) : [];
   console.log('existing ->', existing);
   if (error) {
-    existing.push({error, deviceInfo});
+    existing.push({error, deviceInfo, custInfo});
     await setItem('@error_logs', JSON.stringify(existing));
   }
 };
 
-export const sendLog = async (url, error, customerID, dvcInfo) => {
-  console.log('error ->', error);
-  customerId = customerID;
-  deviceInfo =  dvcInfo;
+export const sendLog = async (url, error, custInfo, dvcInfo) => {
   try {
-    await sendToAPI(url, error);
+    await sendToAPI(url, error, custInfo, dvcInfo);
   } catch (err) {
     console.log(err);
   }

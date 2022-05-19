@@ -7,14 +7,14 @@ import {checkIfItemExist} from './src/utils/shared';
 let apiUrl;
 let errTitle;
 let errMsg;
-let custId;
+let custInfo;
 let dvcInfo;
 
 
 const checkLocalData = async () => {
   let data =  await checkIfItemExist('@error_logs');
   if (data) {
-    await sendLog(apiUrl, JSON.parse(data), custId, dvcInfo);
+    await sendLog(apiUrl, JSON.parse(data), custInfo, dvcInfo);
     clear();
 
   }
@@ -32,18 +32,18 @@ const errorHandler = (e, isFatal) => {
       },
       {text: 'OK', onPress: () => console.log('OK Pressed')},
     ]);
-    sendLog(apiUrl, errString);
+    sendLog(apiUrl, errString,  custInfo, dvcInfo);
   } else {
     console.log(e); // So that we can see it in the ADB logs in case of Android if needed
   }
 };
 
 export default {
-  init ({apiLogUrl = '', errorTitle = '', errorMessage = '', customerId  = '', deviceInfo = {}}) {
+  init ({apiLogUrl = '', errorTitle = '', errorMessage = '', customerInfo  = '', deviceInfo = {}}) {
     apiUrl = apiLogUrl;   
     errMsg = errorMessage;
     errTitle = errorTitle;
-    custId = customerId;
+    custInfo = customerInfo;
     dvcInfo = deviceInfo;
 
     console.log('init exception handler ...');
