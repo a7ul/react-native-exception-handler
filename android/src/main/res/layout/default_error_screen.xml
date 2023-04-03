@@ -20,7 +20,7 @@
             android:textStyle="bold"
             android:textColor="#000"
             android:padding="10dp"
-            android:text="Critical Error Occured !"/>
+            android:text="Critical Error Occurred!"/>
         <ImageView
             android:tint="#F00"
             android:layout_width="match_parent"
