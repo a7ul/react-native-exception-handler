@@ -34,7 +34,9 @@ public class ReactNativeExceptionHandlerModule extends ReactContextBaseJavaModul
   public void setHandlerforNativeException(
           final boolean executeOriginalUncaughtExceptionHandler,
           final boolean forceToQuit,
-          Callback customHandler) {
+          final boolean disableNativeErrorScreen,
+          Callback customHandler
+          ) {
 
       callbackHolder = customHandler;
       originalHandler = Thread.getDefaultUncaughtExceptionHandler();
@@ -47,18 +49,20 @@ public class ReactNativeExceptionHandlerModule extends ReactContextBaseJavaModul
           String stackTraceString = Log.getStackTraceString(throwable);
           callbackHolder.invoke(stackTraceString);
 
-          if (nativeExceptionHandler != null) {
-              nativeExceptionHandler.handleNativeException(thread, throwable, originalHandler);
-          } else {
-              activity = getCurrentActivity();
+              if (nativeExceptionHandler != null) {
+                  nativeExceptionHandler.handleNativeException(thread, throwable, originalHandler);
+              } else {
+                  if (!disableNativeErrorScreen) {
+                      activity = getCurrentActivity();
 
-              Intent i = new Intent();
-              i.setClass(activity, errorIntentTargetClass);
-              i.putExtra("stack_trace_string",stackTraceString);
-              i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                      Intent i = new Intent();
+                      i.setClass(activity, errorIntentTargetClass);
+                      i.putExtra("stack_trace_string", stackTraceString);
+                      i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-              activity.startActivity(i);
-              activity.finish();
+                      activity.startActivity(i);
+                      activity.finish();
+                  }
 
               if (executeOriginalUncaughtExceptionHandler && originalHandler != null) {
                   originalHandler.uncaughtException(thread, throwable);

@@ -25,7 +25,7 @@ export const setJSExceptionHandler = (customHandler = noop, allowedInDevMode = f
 
 export const getJSExceptionHandler = () => global.ErrorUtils.getGlobalHandler();
 
-export const setNativeExceptionHandler = (customErrorHandler = noop, forceApplicationToQuit = true, executeDefaultHandler = false) => {
+export const setNativeExceptionHandler = (customErrorHandler = noop, forceApplicationToQuit = true, executeDefaultHandler = false, disableNativeErrorScreen = false) => {
   if (typeof customErrorHandler !== "function" || typeof forceApplicationToQuit !== "boolean") {
     console.log("setNativeExceptionHandler is called with wrong argument types.. first argument should be callback function and second argument is optional should be a boolean");
     console.log("Not setting the native handler .. please fix setNativeExceptionHandler call");
@@ -34,7 +34,12 @@ export const setNativeExceptionHandler = (customErrorHandler = noop, forceApplic
   if (Platform.OS === "ios") {
     ReactNativeExceptionHandler.setHandlerforNativeException(executeDefaultHandler, customErrorHandler);
   } else {
-    ReactNativeExceptionHandler.setHandlerforNativeException(executeDefaultHandler, forceApplicationToQuit, customErrorHandler);
+    ReactNativeExceptionHandler.setHandlerforNativeException(
+      executeDefaultHandler,
+      forceApplicationToQuit,
+      disableNativeErrorScreen,
+      customErrorHandler
+    );
   }
 };
 

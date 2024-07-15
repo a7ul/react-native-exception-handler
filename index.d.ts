@@ -9,4 +9,5 @@ declare const setNativeExceptionHandler: (
 	handler: NativeExceptionHandler,
 	forceAppQuit?: boolean, // Android only
 	executeDefaultHandler?: boolean,
+	disableNativeErrorScreen?: boolean // Android only
 ) => void;
